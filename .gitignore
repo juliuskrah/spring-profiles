@@ -1,0 +1,17 @@
+target/
+bin/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+spring-profiles-example.iml
+.factorypath
+.idea/
+.springBeans
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.classpath
+.project
+.settings

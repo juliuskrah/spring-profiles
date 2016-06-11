@@ -1,0 +1,104 @@
+<!-- ======================================================================== -->
+<!-- Copyright 2016, Julius Krah										      -->
+<!-- by the @authors tag. See the LICENCE in the distribution for a		      -->
+<!-- full listing of individual contributors.							      -->
+<!--																	      -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");	      -->
+<!-- you may not use this file except in compliance with the License.	      -->
+<!-- You may obtain a copy of the License at							      -->
+<!-- http://www.apache.org/licenses/LICENSE-2.0							      -->
+<!-- Unless required by applicable law or agreed to in writing, software	  -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,		  -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. -->
+<!-- See the License for the specific language governing permissions and	  -->
+<!-- limitations under the License.											  -->
+<!-- ======================================================================== -->
+
+<!DOCTYPE html>
+<html>
+<head
+	th:include="fragments/header :: head(title = 'Spring Profiles : Home')">
+<meta charset="UTF-8" />
+<link href="../static/css/bootstrap.min.css" />
+<title>Home</title>
+</head>
+<body>
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">Add User</h4>
+				</div>
+				<div class="modal-body" id="myModalBody">Lorem ipsum</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+	<div th:include="fragments/header :: header">&nbsp;</div>
+	<p>
+		<a href="#" class="btn btn-large btn-success" data-toggle="modal"
+			data-target="#myModal"
+			th:onclick="'javascript:update(\'' + @{/user/add} + '\')'">Add User</a>
+	</p>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Login</th>
+				<th>First Name</th>
+				<th>Last Name</th>
+				<th>Email</th>
+				<th>Activated</th>
+				<th>Created By</th>
+				<th>Created On</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="user : ${users}">
+				<td><a href="#" data-toggle="modal" data-target="#myModal"
+					th:onclick="'javascript:update(\'' + @{/user/update} + '/' + ${user.id} + '\')'"><span
+						th:inline="text">[[${user.login}]]</span></a></td>
+				<td th:text="${user.firstName}">Julius</td>
+				<td th:text="${user.lastName}">Krah</td>
+				<td th:text="${user.email}">juliuskrah@gmail.com</td>
+				<td th:text="${user.activated}">true</td>
+				<td th:text="${user.createdBy}">system</td>
+				<td th:text="${user.createdDate}">Friday, 5th May, 2016</td>
+				<td><button class="btn btn-danger glyphicon glyphicon-pencil"
+						th:onclick="'javascript:deleteUser(\'' + @{/user/delete}  + '/' + ${user.id} + '\')'"></button></td>
+			</tr>
+		</tbody>
+	</table>
+	<nav th:replace="fragments/footer :: footer">Navigation here</nav>
+	<script>
+		/* Fill in modal with content loaded with Ajax */
+		function update(url) {
+			$("#myModalBody").text("");
+			$.ajax({
+				url : url,
+				cache : false
+			}).done(function(html) {
+				$("#myModalBody").append(html);
+			});
+		}
+
+		function deleteUser(url) {
+			$.ajax({
+				url : url,
+				type : 'delete'
+			}).done(function(info) {
+				console.log(info);
+			});
+		}
+	</script>
+</body>
+</html>

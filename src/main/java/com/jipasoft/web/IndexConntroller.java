@@ -54,8 +54,7 @@ public class IndexConntroller {
 	}
 
 	@RequestMapping(path = "/login", method = GET)
-	public String login(Model model) {
-		model.addAttribute("users", accountService.findAll());
+	public String login() {
 
 		return "signin";
 	}

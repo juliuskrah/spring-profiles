@@ -6,6 +6,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.PATCH;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -81,7 +82,7 @@ public class AccountController {
 		}
 		accountService.save(userDTO.createUser(encoder));
 		log.debug("Saved user: {}", userDTO.createUser(encoder));
-		
+
 		return "redirect:/";
 	}
 
@@ -116,5 +117,11 @@ public class AccountController {
 			return String.format("User %s successfully deleted", user.get().getLogin());
 		}
 		return String.format("No user with id: %s found", id);
+	}
+
+	@ResponseBody
+	@RequestMapping(path = "find_all", method = GET)
+	public List<User> users() {
+		return accountService.findAll();
 	}
 }

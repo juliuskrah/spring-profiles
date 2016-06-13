@@ -16,8 +16,8 @@
 
 
 spring:
-  profiles:
-    active: h2
+  # profiles:
+  #  active: h2
   application:
     name: spring-profiles
   thymeleaf:

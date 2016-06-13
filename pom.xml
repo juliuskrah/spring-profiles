@@ -116,7 +116,7 @@
 				<configuration>
 					<executable>true</executable>
 					<arguments>
-						<argument>--spring.profiles.active=dev</argument>
+						<argument>--spring.profiles.active=h2</argument>
 					</arguments>
 				</configuration>
 			</plugin>

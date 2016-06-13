@@ -22,8 +22,6 @@ spring:
     max-idle: 10
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:mysql://localhost:3306/profiles?autoReconnect=true&useSSL=false
-    username: root
-    password: root
   jpa:
     database: mysql
     properties:

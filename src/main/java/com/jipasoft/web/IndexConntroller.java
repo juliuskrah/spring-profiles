@@ -18,9 +18,8 @@ package com.jipasoft.web;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,28 +32,27 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class IndexConntroller {
 	@NonNull
 	private final AccountService accountService;
 
-	@Autowired
-	private DataSourceProperties prop;
-
 	@PostConstruct
 	public void init() {
-		log.info("The embedded datasource connection string is: {}", prop.getUrl());
+
 	}
 
 	@RequestMapping(path = { "/", "/index" }, method = GET)
 	public String index(Model model) {
 		model.addAttribute("users", accountService.findAll());
+		log.debug("Rendering index page...");
 
 		return "index";
 	}
 
 	@RequestMapping(path = "/login", method = GET)
 	public String login() {
+		log.debug("Rendering signin page...");
 
 		return "signin";
 	}

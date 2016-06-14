@@ -19,11 +19,13 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
+import javax.inject.Inject;
+import javax.inject.Provider;
+
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.jipasoft.repository.BaseRepository;
 
@@ -44,8 +46,8 @@ import lombok.extern.slf4j.Slf4j;
 public class BaseRepositoryImpl<T, ID extends Serializable> implements BaseRepository<T, ID> {
 	private Class<T> persistentClass;
 
-	@Autowired
-	protected SessionFactory sessionFactory;
+	@Inject
+	protected Provider<SessionFactory> sessionFactory;
 
 	//@formatter:off
 	public BaseRepositoryImpl() {}
@@ -60,7 +62,7 @@ public class BaseRepositoryImpl<T, ID extends Serializable> implements BaseRepos
 	 */
 	@Override
 	public void save(T entity) {
-		this.sessionFactory.getCurrentSession().saveOrUpdate(entity);
+		this.sessionFactory.get().getCurrentSession().saveOrUpdate(entity);
 	}
 
 	/**
@@ -68,7 +70,7 @@ public class BaseRepositoryImpl<T, ID extends Serializable> implements BaseRepos
 	 */
 	@Override
 	public void delete(T entity) {
-		Session session = this.sessionFactory.getCurrentSession();
+		Session session = this.sessionFactory.get().getCurrentSession();
 		session.delete(session.contains(entity) ? entity : session.merge(entity));
 
 	}
@@ -78,7 +80,7 @@ public class BaseRepositoryImpl<T, ID extends Serializable> implements BaseRepos
 	 */
 	@Override
 	public void deleteAll() {
-		Session session = this.sessionFactory.getCurrentSession();
+		Session session = this.sessionFactory.get().getCurrentSession();
 		Query query = session.createQuery(String.format("DELETE FROM %s e", persistentClass.getSimpleName()));
 		log.debug("Query executed: {}", String.format("DELETE FROM %s e", persistentClass.getSimpleName()));
 		query.executeUpdate();
@@ -90,7 +92,7 @@ public class BaseRepositoryImpl<T, ID extends Serializable> implements BaseRepos
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<T> findAll() {
-		Session session = this.sessionFactory.getCurrentSession();
+		Session session = this.sessionFactory.get().getCurrentSession();
 		Criteria criteria = session.createCriteria(persistentClass);
 
 		return criteria.list();
@@ -102,7 +104,7 @@ public class BaseRepositoryImpl<T, ID extends Serializable> implements BaseRepos
 	@SuppressWarnings("unchecked")
 	@Override
 	public Optional<T> findOneById(ID id) {
-		Session session = this.sessionFactory.getCurrentSession();
+		Session session = this.sessionFactory.get().getCurrentSession();
 
 		return Optional.of((T) session.get(persistentClass, id));
 	}

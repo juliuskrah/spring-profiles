@@ -45,7 +45,7 @@ public class UserRepositoryImpl extends BaseRepositoryImpl<User, Integer> implem
 	 */
 	@Override
 	public Optional<User> findOneByResetKey(String resetKey) {
-		Session session = this.sessionFactory.getCurrentSession();
+		Session session = this.sessionFactory.get().getCurrentSession();
 		Criteria criteria = session.createCriteria(User.class);
 		criteria.add(Restrictions.like("resetKey", resetKey));
 		return Optional.of((User) criteria.uniqueResult());
@@ -56,7 +56,7 @@ public class UserRepositoryImpl extends BaseRepositoryImpl<User, Integer> implem
 	 */
 	@Override
 	public Optional<User> findOneByEmail(String email) {
-		Session session = this.sessionFactory.getCurrentSession();
+		Session session = this.sessionFactory.get().getCurrentSession();
 		Criteria criteria = session.createCriteria(User.class);
 		criteria.add(Restrictions.like("email", email));
 		return Optional.of((User) criteria.uniqueResult());
@@ -67,7 +67,7 @@ public class UserRepositoryImpl extends BaseRepositoryImpl<User, Integer> implem
 	 */
 	@Override
 	public Optional<User> findOneByLogin(String login) {
-		Session session = this.sessionFactory.getCurrentSession();
+		Session session = this.sessionFactory.get().getCurrentSession();
 		Criteria criteria = session.createCriteria(User.class);
 		criteria.add(Restrictions.like("login", login));
 		return Optional.of((User) criteria.uniqueResult());

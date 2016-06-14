@@ -18,7 +18,9 @@ package com.jipasoft.service.Impl;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
+import javax.inject.Provider;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,8 +40,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Transactional
 public class AccountServiceImpl implements AccountService {
-	@Autowired
-	private UserRepository userRepository;
+	@Inject
+	private Provider<UserRepository> userRepository;
 
 	/**
 	 * {@inheritDoc}
@@ -47,7 +49,7 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public void deleteAllAccounts() {
 		log.info("Deleting all account information from database..");
-		userRepository.deleteAll();
+		userRepository.get().deleteAll();
 	}
 
 	/**
@@ -56,7 +58,7 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public void save(User user) {
 		log.info("Saving user: {} into the database...", user);
-		userRepository.save(user);
+		userRepository.get().save(user);
 	}
 
 	/**
@@ -66,41 +68,41 @@ public class AccountServiceImpl implements AccountService {
 	@Transactional(readOnly = true)
 	public List<User> findAll() {
 		log.debug("Retrieving all user information from the database...");
-		return userRepository.findAll();
+		return userRepository.get().findAll();
 	}
 
 	@Override
 	public void deleteAccount(User user) {
 		log.info("Deleting user: {} from the database...", user);
-		userRepository.delete(user);
+		userRepository.get().delete(user);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Optional<User> findAccountById(Integer id) {
 		log.debug("Retrieving user with id {} from the database...", id);
-		return userRepository.findOneById(id);
+		return userRepository.get().findOneById(id);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Optional<User> findAccountByResetKey(String resetKey) {
 		log.debug("Retrieving user with reset key {} from database...", resetKey);
-		return userRepository.findOneByResetKey(resetKey);
+		return userRepository.get().findOneByResetKey(resetKey);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Optional<User> findAccountByEmail(String email) {
 		log.debug("Retrieving user with email {} from database...", email);
-		return userRepository.findOneByEmail(email);
+		return userRepository.get().findOneByEmail(email);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Optional<User> findAccountByLogin(String login) {
 		log.debug("Retrieving user with username {} from database...", login);
-		return userRepository.findOneByLogin(login);
+		return userRepository.get().findOneByLogin(login);
 	}
 
 }

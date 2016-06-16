@@ -21,7 +21,6 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.jipasoft.service.AccountService;
@@ -43,8 +42,7 @@ public class IndexConntroller {
 	}
 
 	@RequestMapping(path = { "/", "/index" }, method = GET)
-	public String index(Model model) {
-		model.addAttribute("users", accountService.findAll());
+	public String index() {
 		log.debug("Rendering index page...");
 
 		return "index";

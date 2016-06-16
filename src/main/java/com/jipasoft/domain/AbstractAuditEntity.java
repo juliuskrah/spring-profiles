@@ -36,7 +36,6 @@ public class AbstractAuditEntity implements Serializable {
 	@NotNull
 	@Size(min = 1, max = 50)
 	@Column(updatable = false)
-	@JsonIgnore
 	private String createdBy;
 
 	@Column(nullable = false)

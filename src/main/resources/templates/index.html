@@ -101,7 +101,7 @@
 							$('<td>').text(item.createdDate),
 							$('<td>').append(
 									$('<button>').attr({
-										onclick : "deleteUser('user/delete/" + item.id + "')"
+										onclick : "deleteUser('user/delete/" + item.id + "', this)"
 									})
 									.addClass('btn btn-danger glyphicon glyphicon-pencil')
 								)
@@ -122,12 +122,12 @@
 			});
 		}
 
-		function deleteUser(url) {
+		function deleteUser(url, button) {
 			$.ajax({
 				url : url,
 				type : 'delete'
 			}).done(function(info) {
-				$(this).closest('tr').remove();
+				$(button).closest('tr').remove();
 				console.log(info);
 			});
 		}

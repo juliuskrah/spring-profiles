@@ -18,7 +18,7 @@
 <html>
 
 <head
-	th:include="fragments/header :: head(title = 'Spring Profiles : Signup')">
+	th:include="fragments/header :: head(title = 'Spring Profiles : ' + #{home.login})">
 <title>Signup</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link href="../static/css/bootstrap.min.css" rel="stylesheet"
@@ -37,24 +37,24 @@
 		th:method="post" th:action="@{/login}" th:fragment="loginForm">
 
 		<fieldset>
-			<legend>Login</legend>
+			<legend th:text="#{user.login}">Login</legend>
 			<div class="form-group">
-				<label for="login" class="col-lg-2 control-label">Login</label>
+				<label for="login" class="col-lg-2 control-label" th:text="#{user.login}">Login</label>
 				<div class="col-lg-10">
 					<input type="text" class="form-control" id="username"
-						placeholder="Username" />
+						placeholder="Username" th:placeholder="#{user.login}" />
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="password" class="col-lg-2 control-label">Password</label>
+				<label for="password" class="col-lg-2 control-label" th:text="#{user.password}">Password</label>
 				<div class="col-lg-10">
 					<input type="password" class="form-control" id="password"
-						placeholder="Password" />
+						placeholder="Password" th:placeholder="#{user.password}" />
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="col-lg-offset-2 col-lg-10">
-					<button type="submit" class="btn btn-default">Signin</button>
+					<button type="submit" class="btn btn-default" th:text="#{home.login}">Signin</button>
 				</div>
 			</div>
 		</fieldset>

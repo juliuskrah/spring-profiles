@@ -18,7 +18,7 @@
 <html>
 
 <head
-	th:include="fragments/header :: head(title = 'Spring Profiles : Signup')">
+	th:include="fragments/header :: head(title = 'Spring Profiles : ' + #{home.signup})">
 <title>Signup</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link href="../static/css/bootstrap.min.css" rel="stylesheet"
@@ -40,66 +40,74 @@
 		<!--/* Show general error task when form contains errors */-->
 		<th:block th:if="${#fields.hasErrors('${userDTO.*}')}">
 			<div
-				th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">Alert</div>
+				th:replace="fragments/alert :: alert (type='danger', message=#{form.errors})">Alert</div>
 		</th:block>
 		<fieldset>
-			<legend>Complete all fields</legend>
+			<legend th:text="#{user.form}">Complete all fields</legend>
 			<input type="hidden" th:field="*{id}" />
 			<div class="form-group"
 				th:classappend="${#fields.hasErrors('login')}? 'has-error'">
-				<label for="login" class="col-lg-2 control-label">Login</label>
+				<label for="login" class="col-lg-2 control-label"
+					th:text="#{user.login}">Login</label>
 				<div class="col-lg-10">
 					<input type="text" class="form-control" id="login"
-						placeholder="Username" th:field="*{login}" /> <span
-						class="help-block" th:if="${#fields.hasErrors('login')}"
-						th:errors="*{login}">Username already in use</span>
+						placeholder="Username" th:placeholder="#{user.login}"
+						th:field="*{login}" /> <span class="help-block"
+						th:if="${#fields.hasErrors('login')}" th:errors="*{login}">Username
+						already in use</span>
 				</div>
 			</div>
 			<div class="form-group"
 				th:classappend="${#fields.hasErrors('firstName')}? 'has-error'">
-				<label for="firstName" class="col-lg-2 control-label">First
-					Name</label>
+				<label for="firstName" class="col-lg-2 control-label"
+					th:text="#{user.firstname}">First Name</label>
 				<div class="col-lg-10">
 					<input type="text" class="form-control" id="firstName"
-						placeholder="First Name" th:field="*{firstName}" /> <span
-						class="help-block" th:if="${#fields.hasErrors('firstName')}"
-						th:errors="*{firstName}">First name may not be null</span>
+						placeholder="First Name" th:placeholder="#{user.firstname}"
+						th:field="*{firstName}" /> <span class="help-block"
+						th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First
+						name may not be null</span>
 				</div>
 			</div>
 			<div class="form-group"
 				th:classappend="${#fields.hasErrors('lastName')}? 'has-error'">
-				<label for="lastName" class="col-lg-2 control-label">Last
-					Name</label>
+				<label for="lastName" class="col-lg-2 control-label"
+					th:text="#{user.lastname}">Last Name</label>
 				<div class="col-lg-10">
 					<input type="text" class="form-control" id="lastName"
-						placeholder="Last Name" th:field="*{lastName}" /> <span
-						class="help-block" th:if="${#fields.hasErrors('lastName')}"
-						th:errors="*{lastName}">Last name may not be null</span>
+						placeholder="Last Name" th:placeholder="#{user.lastname}"
+						th:field="*{lastName}" /> <span class="help-block"
+						th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last
+						name may not be null</span>
 				</div>
 			</div>
 			<div class="form-group"
 				th:classappend="${#fields.hasErrors('email')}? 'has-error'">
-				<label for="email" class="col-lg-2 control-label">Email</label>
+				<label for="email" class="col-lg-2 control-label"
+					th:text="#{user.email}">Email</label>
 				<div class="col-lg-10">
 					<input type="email" class="form-control" id="email"
-						placeholder="Email address" th:field="*{email}" /> <span
-						class="help-block" th:if="${#fields.hasErrors('email')}"
-						th:errors="*{email}">Incorrect email</span>
+						placeholder="Email address" th:placeholder="#{user.email}"
+						th:field="*{email}" /> <span class="help-block"
+						th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Incorrect
+						email</span>
 				</div>
 			</div>
 			<div class="form-group"
 				th:classappend="${#fields.hasErrors('password')}? 'has-error'">
-				<label for="password" class="col-lg-2 control-label">Password</label>
+				<label for="password" class="col-lg-2 control-label"
+					th:text="#{user.password}">Password</label>
 				<div class="col-lg-10">
 					<input type="password" class="form-control" id="password"
-						placeholder="Password" th:field="*{password}" /> <span
-						class="help-block" th:if="${#fields.hasErrors('password')}"
-						th:errors="*{password}">Incorrect password</span>
+						placeholder="Password" th:placeholder="#{user.password}"
+						th:field="*{password}" /> <span class="help-block"
+						th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Incorrect
+						password</span>
 				</div>
 			</div>
 			<div class="form-group"
 				th:classappend="${#fields.hasErrors('activated')}? 'has-error'">
-				<label for="activated" class="col-lg-2 control-label">Activate</label>
+				<label for="activated" class="col-lg-2 control-label" th:text="#{user.activated}">Activate</label>
 				<div class="col-lg-10">
 					<input type="checkbox" class="form-control" id="activated"
 						th:field="*{activated}" /> <span class="help-block"
@@ -110,7 +118,7 @@
 			<div class="form-group">
 				<div class="col-lg-offset-2 col-lg-10">
 					<button type="submit" class="btn btn-default" th:inline="text">[[${userDTO.id}
-						!= null ? 'Update User' : 'Add User']]</button>
+						!= null ? #{user.update} : #{user.add}]]</button>
 				</div>
 			</div>
 		</fieldset>

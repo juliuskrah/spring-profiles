@@ -42,18 +42,18 @@
 					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#" th:href="@{/}">My project</a>
+				<a class="navbar-brand" href="#" th:href="@{/}" th:text="#{home.project}">My project</a>
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="#" th:href="@{/}">Home</a></li>
+					<li class="active"><a href="#" th:href="@{/}" th:text="#{home.welcome}">Home Page</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<!-- TODO when user is not authenticated show <code>signup &amp; signin</code> -->
-					<li><a href="/signin" th:href="@{/login}">Sign in</a></li>
-					<li><a href="/signin" th:href="@{/user/signup}">Sign up</a></li>
+					<li><a href="/signin" th:href="@{/login}" th:text="#{home.login}">Login</a></li>
+					<li><a href="/signin" th:href="@{/user/signup}" th:text="#{home.signup}">Create account</a></li>
 					<!-- TODO when user is authenticated show <code>logout</code> -->
-					<li><a href="/logout" th:href="@{/logout}">Logout</a></li>
+					<li><a href="/logout" th:href="@{/logout}" th:text="#{home.logout}">Sign out</a></li>
 				</ul>
 			</div>
 			<!--/.nav-collapse -->

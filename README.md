@@ -17,6 +17,7 @@ public class H2Config {
 ```
 
 The focus of this project is to demonstrate how to build a Spring application that runs on multiple database platforms. The database technologies targeted are:
+
 * [H2][H2]
 * [MySQL][MySQL]
 * [PostgreSQL][PostgreSQL]

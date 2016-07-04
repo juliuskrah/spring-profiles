@@ -23,7 +23,7 @@ The focus of this project is to demonstrate how to build a Spring application th
 * [PostgreSQL][]
 * [MongoDB][]
 
-All profiles implement the interfaces in `com.jipasoft.repository` package using different strategies. Another use for the profiles is to prevent conflicting [bean][] definitions. Not all beans will be loaded together. e.g.
+All profiles implement the interfaces in `com.jipasoft.repository` package using different strategies. Another use for the profiles is to prevent conflicting [bean][] definitions. With the profiles configured properly, not all beans will be loaded together. e.g.
 
 ```java
 package com.jipasoft.repository.mysql;
@@ -123,7 +123,7 @@ public class UserRepositoryImpl extends BaseRepositoryImpl<User, Integer> implem
 
 ```
 
-This bean if loaded together with the above bean of same type and name will cause a conflict. Thus this bean definition will only get loaded if the `postgres` profile is active.
+This bean, if loaded together with the above bean of same type and name will cause a conflict. Thus this bean definition will only get loaded if the `postgres` profile is active.
 
 ## [H2][]
 The H2 profile is the default profile for this application if no active profile is selected. This profile uses [Spring Data JPA][] as an abstraction of the [Hibernate][] JPA implementation.
@@ -132,7 +132,7 @@ The H2 profile is the default profile for this application if no active profile 
 [comment]: # (The implicit link name shortcut allows you to omit the name of the link, in which case the link text itself is used as the name)
 [comment]: # (Reference links are not case sensitive)
 
-[bean]: http://www.tutorialspoint.com/spring/spring_bean_definition.htm
+[bean]: http://www.tutorialspoint.com/spring/spring_bean_definition.htm "Spring Beans"
 [Spring Data MongoDB]: http://docs.spring.io/spring-data/data-mongo/docs/1.9.2.RELEASE/reference/html/ "Spring Data MongoDB"
 [Spring Data JPA]: http://docs.spring.io/spring-data/jpa/docs/1.10.2.RELEASE/reference/html/ "Spring Data JPA"
 [Hibernate]: http://hibernate.org/orm/documentation/getting-started/ "Hibernate ORM"

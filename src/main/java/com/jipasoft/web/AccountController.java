@@ -1,10 +1,5 @@
 package com.jipasoft.web;
 
-import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.PATCH;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
-
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -16,8 +11,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -42,7 +41,7 @@ public class AccountController {
 	private final PasswordEncoder encoder;
 	private static String ADD_USER_VIEW_NAME = "add_user";
 
-	@RequestMapping(path = { "add", "signup" }, method = GET)
+	@GetMapping(path = { "add", "signup" })
 	public String add(Model model, @RequestHeader(value = "X-Requested-With", required = false) String requestedWith) {
 		model.addAttribute(new UserDTO());
 		if (AjaxUtils.isAjaxRequest(requestedWith)) {
@@ -51,7 +50,7 @@ public class AccountController {
 		return ADD_USER_VIEW_NAME;
 	}
 
-	@RequestMapping(path = "update/{id}", method = GET)
+	@GetMapping(path = "update/{id}")
 	public String update(Model model, @RequestHeader(value = "X-Requested-With", required = false) String requestedWith,
 			@PathVariable int id) {
 		Optional<User> user = accountService.findAccountById(id);
@@ -75,7 +74,7 @@ public class AccountController {
 		return ADD_USER_VIEW_NAME;
 	}
 
-	@RequestMapping(value = "add", method = POST)
+	@PostMapping("add")
 	public String add(@Valid @ModelAttribute UserDTO userDTO, Errors errors) {
 		if (errors.hasErrors()) {
 			return ADD_USER_VIEW_NAME;
@@ -86,7 +85,7 @@ public class AccountController {
 		return "redirect:/";
 	}
 
-	@RequestMapping(value = "add", method = PATCH)
+	@PatchMapping("add")
 	public String update(@Valid @ModelAttribute UserDTO userDTO, Errors errors) {
 		if (errors.hasErrors()) {
 			return ADD_USER_VIEW_NAME;
@@ -109,7 +108,7 @@ public class AccountController {
 	}
 
 	@ResponseBody
-	@RequestMapping(path = "delete/{id}", method = DELETE)
+	@DeleteMapping("delete/{id}")
 	public String delete(@PathVariable int id) {
 		Optional<User> user = accountService.findAccountById(id);
 		if (user.isPresent()) {
@@ -120,7 +119,7 @@ public class AccountController {
 	}
 
 	@ResponseBody
-	@RequestMapping(path = "find_all", method = GET)
+	@GetMapping("find_all")
 	public List<User> users() {
 		return accountService.findAll();
 	}

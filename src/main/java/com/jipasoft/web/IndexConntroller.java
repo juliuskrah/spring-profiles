@@ -15,13 +15,11 @@
 */
 package com.jipasoft.web;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import com.jipasoft.service.AccountService;
 
@@ -41,14 +39,14 @@ public class IndexConntroller {
 
 	}
 
-	@RequestMapping(path = { "/", "/index" }, method = GET)
+	@GetMapping({ "/", "/index" })
 	public String index() {
 		log.debug("Rendering index page...");
 
 		return "index";
 	}
 
-	@RequestMapping(path = "/login", method = GET)
+	@GetMapping("/login")
 	public String login() {
 		log.debug("Rendering signin page...");
 

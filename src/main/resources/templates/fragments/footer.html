@@ -22,7 +22,7 @@
 	media="screen" th:href="@{/css/bootstrap.min.css}" />
 </head>
 <body>
-	<div th:fragment="footer">&copy; 2016 Julius Krah</div>
+	<div th:fragment="footer" th:inline="text">&copy; [[${#calendars.year(#calendars.createNow())}]] Julius Krah</div>
 </body>
 </html>
 

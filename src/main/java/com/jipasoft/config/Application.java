@@ -17,9 +17,9 @@ package com.jipasoft.config;
 
 import java.util.Locale;
 
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -62,7 +62,7 @@ import com.jipasoft.web.Controllers;
 public class Application extends WebMvcConfigurerAdapter {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
+		new SpringApplicationBuilder().sources(Application.class).run(args);
 	}
 
 	@Bean

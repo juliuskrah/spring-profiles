@@ -23,7 +23,6 @@ spring:
   datasource:
     allow-pool-suspension: true
     connection-timeout: 1000
-    type: com.zaxxer.hikari.HikariDataSource
     # set the database name. The connection string is auto-configured by spring-boot
     # ;DB_CLOSE_ON_EXIT=FALSE is part of the default config
     name: testDb

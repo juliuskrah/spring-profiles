@@ -18,6 +18,8 @@
 spring:
   # profiles:
   #  active: h2
+  main:
+    banner-mode: "off" #Yaml interprets 'off' as 'false' so wrap it in quotes
   application:
     name: spring-profiles
   thymeleaf:
@@ -27,6 +29,7 @@ spring:
     serialization:
       indent-output: true
   datasource:
+    type: com.zaxxer.hikari.HikariDataSource
     connection-timeout: 10000
     initial-size: 5
     max-active: 8
@@ -49,4 +52,4 @@ logging:
   level:
     root: error
     com.jipasoft: debug
-    com.zaxxer.hikari: info
+    com.zaxxer.hikari: warn

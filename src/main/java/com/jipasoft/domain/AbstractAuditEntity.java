@@ -23,8 +23,6 @@ import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.Data;
 
 @Data
@@ -39,13 +37,10 @@ public class AbstractAuditEntity implements Serializable {
 	private String createdBy;
 
 	@Column(nullable = false)
-	@JsonIgnore
 	private ZonedDateTime createdDate = ZonedDateTime.now();
 
 	@Size(max = 50)
-	@JsonIgnore
 	private String lastModifiedBy;
 
-	@JsonIgnore
 	private ZonedDateTime lastModifiedDate;
 }

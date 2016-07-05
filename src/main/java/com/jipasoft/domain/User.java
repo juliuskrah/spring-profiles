@@ -56,10 +56,11 @@ public class User extends AbstractAuditEntity implements Serializable {
 	@Column(unique = true)
 	private String login;
 
-	@JsonIgnore
+	
 	@NotNull
 	@Size(min = 60, max = 60)
 	@Column(name = "password_hash")
+	@JsonIgnore
 	private String password;
 
 	@Size(max = 50)
@@ -81,6 +82,7 @@ public class User extends AbstractAuditEntity implements Serializable {
 	private String activationKey;
 
 	@Size(max = 20)
+	@JsonIgnore
 	private String resetKey;
 
 	private ZonedDateTime resetDate = null;

@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jipasoft.config.ApplicationTests;
 import com.jipasoft.domain.User;
 
-@ActiveProfiles("mysql")
+@ActiveProfiles("h2")
 @Transactional
 public class UserRepositoryTests extends ApplicationTests {
 	private static final Logger log = LoggerFactory.getLogger(UserRepositoryTests.class);

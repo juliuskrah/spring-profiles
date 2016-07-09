@@ -15,6 +15,6 @@ import lombok.Data;
 public class Authority implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
-	@Size(min = 1, max = 20)
+	@Size(min = 1, max = 50)
 	private String name;
 }

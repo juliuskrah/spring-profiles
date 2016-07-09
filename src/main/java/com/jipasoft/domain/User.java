@@ -52,7 +52,7 @@ public class User extends AbstractAuditEntity implements Serializable {
 
 	@NotNull
 	@Pattern(regexp = "^[a-z0-9]*$|(anonymousUser)")
-	@Size(min = 1, max = 50)
+	@Size(min = 1, max = 100)
 	@Column(unique = true)
 	private String login;
 

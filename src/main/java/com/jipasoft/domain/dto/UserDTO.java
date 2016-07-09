@@ -34,7 +34,7 @@ public class UserDTO {
 
 	@NotNull
 	@Pattern(regexp = "^[a-z0-9]*$|(anonymousUser)")
-	@Size(min = 1, max = 50)
+	@Size(min = 1, max = 100)
 	private String login;
 
 	@NotNull

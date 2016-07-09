@@ -38,7 +38,7 @@ spring:
   jpa:
     hibernate:
       naming-strategy: org.springframework.boot.orm.jpa.hibernate.SpringNamingStrategy
-      ddl-auto: create
+      ddl-auto: none
   messages:
     basename: i18n/messages
   h2:
@@ -51,5 +51,5 @@ security:
 logging:
   level:
     root: error
-    com.jipasoft: debug
+    com.jipasoft: info
     com.zaxxer.hikari: warn

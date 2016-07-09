@@ -28,7 +28,7 @@ spring:
     name: testDb
   jpa:
     database: h2
-    generate-ddl: true 
+    generate-ddl: false 
   h2:
     console:
       enabled: true

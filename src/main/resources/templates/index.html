@@ -31,11 +31,13 @@
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true">&times;</button>
-					<h4 class="modal-title" id="myModalLabel" th:text="#{user.add}">Add Account</h4>
+					<h4 class="modal-title" id="myModalLabel" th:text="#{user.add}">Add
+						Account</h4>
 				</div>
 				<div class="modal-body" id="myModalBody">Lorem ipsum</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal" th:text="#{modal.close}">Close</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal"
+						th:text="#{modal.close}">Close</button>
 				</div>
 			</div>
 			<!-- /.modal-content -->
@@ -44,70 +46,91 @@
 	</div>
 	<!-- /.modal -->
 	<div th:include="fragments/header :: header">&nbsp;</div>
-	<p>
-		<a href="#" class="btn btn-large btn-success" data-toggle="modal"
-			data-target="#myModal"
-			th:onclick="'javascript:update(\'' + @{/user/add} + '\')'" th:text="#{user.add}">Add
-			User</a>
-	</p>
-	<table class="table table-striped">
-		<thead>
-			<tr>
-				<th th:text="#{user.login}">Login</th>
-				<th th:text="#{user.firstname}">First Name</th>
-				<th th:text="#{user.lastname}">Last Name</th>
-				<th th:text="#{user.email}">Email</th>
-				<th th:text="#{user.activated}">Activated</th>
-				<th th:text="#{user.createdby}">Created By</th>
-				<th th:text="#{user.createdon}">Created On</th>
-				<th th:text="#{user.action}">Action</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td><a href="#" data-toggle="modal" data-target="#myModal"><span>julius</span></a></td>
-				<td>Julius</td>
-				<td>Krah</td>
-				<td>juliuskrah@gmail.com</td>
-				<td>true</td>
-				<td>system</td>
-				<td>Friday, 5th May, 2016</td>
-				<td><button class="btn btn-danger glyphicon glyphicon-remove"></button></td>
-			</tr>
-		</tbody>
-	</table>
-	<nav th:replace="fragments/footer :: footer">Navigation here</nav>
+	<div class="container">
+		<p>
+			<a href="#" class="btn btn-large btn-success" data-toggle="modal"
+				data-target="#myModal"
+				th:onclick="'javascript:update(\'' + @{/user/add} + '\')'"
+				th:text="#{user.add}">Add User</a>
+		</p>
+		<th:block th:if="${message != null}">
+			<div class="alert alert-success alert-dismissable">
+				<button type="button" class="close" data-dismiss="alert"
+					aria-hidden="true">&times;</button>
+				<span th:text="#{${message}(${name})}">Test</span>
+			</div>
+		</th:block>
+		<div class="alert alert-success alert-dismissable"  id="delete">
+			<button type="button" class="close" data-dismiss="alert"
+				aria-hidden="true">&times;</button>
+			<span>Test</span>
+		</div>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th th:text="#{user.login}">Login</th>
+					<th th:text="#{user.firstname}">First Name</th>
+					<th th:text="#{user.lastname}">Last Name</th>
+					<th th:text="#{user.email}">Email</th>
+					<th th:text="#{user.activated}">Activated</th>
+					<th th:text="#{user.createdby}">Created By</th>
+					<th th:text="#{user.createdon}">Created On</th>
+					<th th:text="#{user.action}">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><a href="#" data-toggle="modal" data-target="#myModal"><span>julius</span></a></td>
+					<td>Julius</td>
+					<td>Krah</td>
+					<td>juliuskrah@gmail.com</td>
+					<td>true</td>
+					<td>system</td>
+					<td>Friday, 5th May, 2016</td>
+					<td><button class="btn btn-danger glyphicon glyphicon-remove"></button></td>
+				</tr>
+			</tbody>
+		</table>
+		<nav th:replace="fragments/footer :: footer">Navigation here</nav>
+	</div>
 	<script>
 		/*<![CDATA[*/
-		$.ajax({
-			url : "user/find_all",
+		$(function() {
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
+			$(document).ajaxSend(function(e, xhr, options) {
+				xhr.setRequestHeader(header, token);
+			});
+		});
+
+		$.ajax({url : "user/find_all",
 			success : function(response) {
+				$("#delete").hide();
 				$("tr:has(td)").remove();
 
 				$.each(response, function(i, item) {
-					$('<tr>').append($('<td>').append(
-								$('<a>').attr({
-									href : '#', 
-									onclick: "update('user/update/" + item.id + "')",
-									'data-toggle': "modal", 
-									'data-target': '#myModal'
-								}).text(item.login)
-							),
-							$('<td>').text(item.firstName),
-							$('<td>').text(item.lastName),
-							$('<td>').text(item.email),
-							$('<td>').text(item.activated),
-							$('<td>').text(item.createdBy),
-							$('<td>').text(item.createdDate),
-							$('<td>').append(
-									$('<button>').attr({
-										onclick : "deleteUser('user/delete/" + item.id + "', this)"
-									})
-									.addClass('btn btn-danger glyphicon glyphicon-remove')
-								)
-
+					$('<tr>').append(
+						$('<td>').append(
+							$('<a>').attr({
+								href : '#',
+								onclick : "update('user/update/" + item.id + "')",
+								'data-toggle' : 'modal',
+								'data-target' : '#myModal'
+							}).text(item.login)
+						),
+						$('<td>').text(item.firstName),
+						$('<td>').text(item.lastName),
+						$('<td>').text(item.email),
+						$('<td>').text(item.activated),
+						$('<td>').text(item.createdBy),
+						$('<td>').text(item.createdDate),
+						$('<td>').append(
+							$('<button>').attr({
+								onclick : "deleteUser('user/delete/" + item.id + "', this)"
+							}).addClass('btn btn-danger glyphicon glyphicon-remove')
+						)
 					).appendTo('tbody');
-				})
+				});
 			}
 		});
 
@@ -128,7 +151,8 @@
 				type : 'delete'
 			}).done(function(info) {
 				$(button).closest('tr').remove();
-				console.log(info);
+				$("#delete span").text(info);
+				$("#delete").show();
 			});
 		}
 		/*]]>*/

@@ -38,8 +38,20 @@
 
 		<fieldset>
 			<legend th:text="#{user.login}">Login</legend>
-			<div th:if="${param.error}" class="alert alert-danger" th:inline="text">[[#{login.error}]]</div>
-			<div th:if="${param.logout}" class="alert alert-success" th:inline="text">[[#{login.logout}]]</div>
+			<th:block th:if="${param.error}">
+				<div class="alert alert-danger alert-dismissable">
+					<button type="button" class="close" data-dismiss="alert"
+						aria-hidden="true">&times;</button>
+					<span th:inline="text">[[#{login.error}]]</span>
+				</div>
+			</th:block>
+			<th:block th:if="${param.logout}">
+				<div class="alert alert-success alert-dismissable">
+					<button type="button" class="close" data-dismiss="alert"
+						aria-hidden="true">&times;</button>
+					<span th:inline="text">[[#{login.logout}]]</span>
+				</div>
+			</th:block>
 			<div class="form-group">
 				<label for="username" class="col-lg-2 control-label"
 					th:text="#{user.login}">Login</label>

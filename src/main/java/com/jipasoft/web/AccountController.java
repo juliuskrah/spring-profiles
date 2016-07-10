@@ -17,11 +17,13 @@ package com.jipasoft.web;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,6 +37,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.jipasoft.domain.User;
 import com.jipasoft.domain.dto.UserDTO;
@@ -54,6 +57,8 @@ public class AccountController {
 	private final AccountService accountService;
 	@NonNull
 	private final PasswordEncoder encoder;
+	@NonNull
+	private final MessageSource messageSource;
 	private static String ADD_USER_VIEW_NAME = "add_user";
 
 	@GetMapping(path = { "add", "signup" })
@@ -90,18 +95,19 @@ public class AccountController {
 	}
 
 	@PostMapping("add")
-	public String add(@Valid @ModelAttribute UserDTO userDTO, Errors errors) {
+	public String add(@Valid @ModelAttribute UserDTO userDTO, Errors errors, RedirectAttributes ra) {
 		if (errors.hasErrors()) {
 			return ADD_USER_VIEW_NAME;
 		}
 		accountService.save(userDTO.createUser(encoder));
 		log.debug("Saved user: {}", userDTO.createUser(encoder));
+		ra.addFlashAttribute("message", "create.add").addFlashAttribute("name", userDTO.getLogin());
 
 		return "redirect:/";
 	}
 
 	@PatchMapping("add")
-	public String update(@Valid @ModelAttribute UserDTO userDTO, Errors errors) {
+	public String update(@Valid @ModelAttribute UserDTO userDTO, Errors errors, RedirectAttributes ra) {
 		if (errors.hasErrors()) {
 			return ADD_USER_VIEW_NAME;
 		}
@@ -119,16 +125,18 @@ public class AccountController {
 			log.debug("Updating user: {}", u);
 			accountService.save(u);
 		}
+
+		ra.addFlashAttribute("message", "create.update").addFlashAttribute("name", userDTO.getLogin());
 		return "redirect:/";
 	}
 
 	@ResponseBody
 	@DeleteMapping("delete/{id}")
-	public String delete(@PathVariable int id) {
+	public String delete(@PathVariable int id, Locale loc) {
 		Optional<User> user = accountService.findAccountById(id);
 		if (user.isPresent()) {
 			accountService.deleteAccount(user.get());
-			return String.format("User %s successfully deleted", user.get().getLogin());
+			return messageSource.getMessage("create.delete", new Object[] { user.get().getLogin() }, loc);
 		}
 		return String.format("No user with id: %s found", id);
 	}

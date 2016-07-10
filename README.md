@@ -1,4 +1,34 @@
 # Spring Profiles Project
+
+## Quick Start
+This section contains the pre-requisite to run the application, how to run the application and how to access some of the application features.
+
+### Pre-requisite
+Not much is involved to run this application. You only need two items:
+* [Maven][] 3.3+
+* [Git][]
+
+### Getting the Project
+Get the project from the source repository
+>`git clone https://juliuskrah@bitbucket.org/juliuskrah/spring-profiles.git`
+
+### Running the Project
+To run the project, first navigate into the source directory `cd spring-profiles` and execute `mvn`.
+
+When you execute the `mvn` command, two things are happening here.
+* `spring-boot:run`: first it executes the Spring-Boot maven plugin
+* `--spring.profiles.active=h2`: second it starts the project with the `h2` profile active
+
+With this in mind, you don't have to worry about setting up a database. The application starts an undertow server instance on port `8080`.
+> <`http://localhost:8080`>
+
+Use the link above to access the application. The application is secured with [Spring Security][security] and you would be redirected to a login page `http://localhost:8080/login`
+> username: `admin`
+  password: `admin`
+  
+It's that easy.
+
+## Introduction
 [Spring][] [Profiles][] provide a way to segregate parts of your application configuration and make it only available in certain environments. Any [`@Component`][Component] or [`@Configuration`][Configuration] can be marked with [`@Profile`][Profile] to limit when it is loaded:
 
 ```java
@@ -132,6 +162,9 @@ The H2 profile is the default profile for this application if no active profile 
 [comment]: # (The implicit link name shortcut allows you to omit the name of the link, in which case the link text itself is used as the name)
 [comment]: # (Reference links are not case sensitive)
 
+[Maven]: http://maven.apache.org/
+[Git]: https://git-scm.com/
+[security]: http://docs.spring.io/spring-security/site/docs/4.1.1.RELEASE/reference/htmlsingle/
 [bean]: http://www.tutorialspoint.com/spring/spring_bean_definition.htm "Spring Beans"
 [Spring Data MongoDB]: http://docs.spring.io/spring-data/data-mongo/docs/1.9.2.RELEASE/reference/html/ "Spring Data MongoDB"
 [Spring Data JPA]: http://docs.spring.io/spring-data/jpa/docs/1.10.2.RELEASE/reference/html/ "Spring Data JPA"

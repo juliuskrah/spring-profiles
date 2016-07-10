@@ -20,12 +20,15 @@ import java.util.Locale;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
+import org.springframework.boot.context.embedded.ErrorPage;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -95,12 +98,18 @@ public class Application extends WebMvcConfigurerAdapter {
 		return objectMapper;
 	}
 
+	@Bean
+	public EmbeddedServletContainerCustomizer containerCustomizer() {
+		return (container) -> container.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/404"));
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addViewController("/login").setViewName("signin");
+		registry.addViewController("/404").setViewName("404");
 	}
 
 	/**

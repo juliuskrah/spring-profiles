@@ -31,6 +31,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
@@ -58,7 +59,7 @@ import com.jipasoft.web.Controllers;
  */
 @SpringBootApplication(scanBasePackageClasses = { Controllers.class, Services.class })
 @EntityScan(basePackageClasses = AbstractAuditEntity.class)
-@Import(value = { H2Config.class, PostgresConfig.class, MySQLConfig.class })
+@Import(value = { H2Config.class, PostgresConfig.class, MySQLConfig.class, SecurityConfig.class })
 public class Application extends WebMvcConfigurerAdapter {
 
 	public static void main(String[] args) {
@@ -94,6 +95,17 @@ public class Application extends WebMvcConfigurerAdapter {
 		return objectMapper;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void addViewControllers(ViewControllerRegistry registry) {
+		registry.addViewController("/login").setViewName("signin");
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(localeChangeInterceptor());

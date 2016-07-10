@@ -45,6 +45,8 @@ spring:
     console:
       enabled: false
 security:
+  basic:
+    enabled: false
   user:
     name: julius
     password: password

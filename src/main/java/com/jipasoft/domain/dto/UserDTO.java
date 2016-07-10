@@ -16,6 +16,8 @@
 package com.jipasoft.domain.dto;
 
 import java.time.ZonedDateTime;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -24,6 +26,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.jipasoft.domain.Authority;
 import com.jipasoft.domain.User;
 
 import lombok.Data;
@@ -58,7 +61,7 @@ public class UserDTO {
 	private boolean activated = false;
 
 	@NotNull
-	private String createdBy = "System";
+	private String createdBy = "system";
 
 	@NotNull
 	private ZonedDateTime createdDate = ZonedDateTime.now();
@@ -73,6 +76,7 @@ public class UserDTO {
 		user.setActivated(activated);
 		user.setCreatedBy(createdBy);
 		user.setCreatedDate(createdDate);
+		user.setAuthorities(Stream.of(new Authority("ROLE_USER")).collect(Collectors.toSet()));
 
 		return user;
 	}

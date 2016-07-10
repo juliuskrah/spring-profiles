@@ -38,23 +38,30 @@
 
 		<fieldset>
 			<legend th:text="#{user.login}">Login</legend>
+			<div th:if="${param.error}" class="alert alert-danger" th:inline="text">[[#{login.error}]]</div>
+			<div th:if="${param.logout}" class="alert alert-success" th:inline="text">[[#{login.logout}]]</div>
 			<div class="form-group">
-				<label for="login" class="col-lg-2 control-label" th:text="#{user.login}">Login</label>
+				<label for="username" class="col-lg-2 control-label"
+					th:text="#{user.login}">Login</label>
 				<div class="col-lg-10">
 					<input type="text" class="form-control" id="username"
-						placeholder="Username" th:placeholder="#{user.login}" />
+						name="username" placeholder="Username"
+						th:placeholder="#{user.login}" />
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="password" class="col-lg-2 control-label" th:text="#{user.password}">Password</label>
+				<label for="password" class="col-lg-2 control-label"
+					th:text="#{user.password}">Password</label>
 				<div class="col-lg-10">
 					<input type="password" class="form-control" id="password"
-						placeholder="Password" th:placeholder="#{user.password}" />
+						name="password" placeholder="Password"
+						th:placeholder="#{user.password}" />
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="col-lg-offset-2 col-lg-10">
-					<button type="submit" class="btn btn-default" th:text="#{home.login}">Signin</button>
+					<button type="submit" class="btn btn-default"
+						th:text="#{home.login}">Signin</button>
 				</div>
 			</div>
 		</fieldset>

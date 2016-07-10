@@ -13,31 +13,25 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package com.jipasoft.domain;
+package com.jipasoft.exception;
 
-import java.io.Serializable;
+import org.springframework.security.core.AuthenticationException;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.Size;
+/**
+ * This exception is thrown in case of a not activated user trying to
+ * authenticate.
+ * 
+ * @author Julius Krah
+ */
+public class AccountNotActivatedException extends AuthenticationException {
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+	private static final long serialVersionUID = 8415982426813000504L;
 
-@Data
-@Entity
-@NoArgsConstructor
-@Table(name = "role")
-public class Authority implements Serializable {
-	private static final long serialVersionUID = 1L;
-
-	public Authority(String name) {
-		this.name = name;
+	public AccountNotActivatedException(String message) {
+		super(message);
 	}
 
-	@Id
-	@Size(min = 1, max = 50)
-	private String name;
-
+	public AccountNotActivatedException(String message, Throwable t) {
+		super(message, t);
+	}
 }

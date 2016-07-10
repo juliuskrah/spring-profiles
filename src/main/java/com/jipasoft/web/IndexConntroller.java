@@ -16,23 +16,15 @@
 package com.jipasoft.web;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.jipasoft.service.AccountService;
-
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class IndexConntroller {
-	@NonNull
-	private final AccountService accountService;
 
 	@PostConstruct
 	public void init() {
@@ -45,12 +37,4 @@ public class IndexConntroller {
 
 		return "index";
 	}
-
-	@GetMapping("/login")
-	public String login() {
-		log.debug("Rendering signin page...");
-
-		return "signin";
-	}
-
 }

@@ -17,9 +17,9 @@ package com.jipasoft.config;
 
 import java.util.Locale;
 
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.context.embedded.ErrorPage;
 import org.springframework.boot.orm.jpa.EntityScan;
@@ -36,8 +36,8 @@ import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -66,21 +66,32 @@ import com.jipasoft.web.Controllers;
 public class Application extends WebMvcConfigurerAdapter {
 
 	public static void main(String[] args) {
-		new SpringApplicationBuilder().sources(Application.class).run(args);
+		SpringApplication app = new SpringApplication(Application.class);
+		app.run(args);
 	}
 
 	@Bean
 	public PasswordEncoder encoder() {
-		return new BCryptPasswordEncoder();
+		return new BCryptPasswordEncoder(10);
 	}
 
+	/**
+	 * i18n support bean
+	 * 
+	 * @return
+	 */
 	@Bean
 	public LocaleResolver localeResolver() {
-		SessionLocaleResolver slr = new SessionLocaleResolver();
+		CookieLocaleResolver slr = new CookieLocaleResolver();
 		slr.setDefaultLocale(Locale.US);
 		return slr;
 	}
 
+	/**
+	 * i18n bean support for switching locales through a request param
+	 * 
+	 * @return
+	 */
 	@Bean
 	public LocaleChangeInterceptor localeChangeInterceptor() {
 		LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
@@ -88,6 +99,12 @@ public class Application extends WebMvcConfigurerAdapter {
 		return lci;
 	}
 
+	/**
+	 * This bean was added to support JSR310 serialization to JSON
+	 * 
+	 * @param builder
+	 * @return
+	 */
 	@Bean
 	@Primary
 	public ObjectMapper objectMapper(Jackson2ObjectMapperBuilder builder) {
@@ -98,6 +115,11 @@ public class Application extends WebMvcConfigurerAdapter {
 		return objectMapper;
 	}
 
+	/**
+	 * Bean to handle 404 pages
+	 * 
+	 * @return
+	 */
 	@Bean
 	public EmbeddedServletContainerCustomizer containerCustomizer() {
 		return (container) -> container.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/404"));

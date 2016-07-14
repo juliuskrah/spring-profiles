@@ -33,8 +33,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jipasoft.config.ApplicationTests;
 import com.jipasoft.domain.User;
+import com.jipasoft.util.Profiles;
 
-@ActiveProfiles("h2")
+@ActiveProfiles(Profiles.H2)
 @Transactional
 public class UserRepositoryTests extends ApplicationTests {
 	private static final Logger log = LoggerFactory.getLogger(UserRepositoryTests.class);

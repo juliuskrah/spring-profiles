@@ -41,9 +41,22 @@ spring:
       ddl-auto: none
   messages:
     basename: i18n/messages
+    fallback-to-system-locale: true
   h2:
     console:
       enabled: false
+  mail:
+    default-encoding: UTF-8
+    host: smtp.mail.yahoo.com
+    password: 
+    port: 587
+    protocol: smtp
+    # test-connection: 
+    username: 
+    properties:
+      mail.smtp.auth: true
+  mvc:
+    locale: en_US
 security:
   basic:
     enabled: false

@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.jipasoft.repository.h2.BaseRepositoryImpl;
+import com.jipasoft.util.Profiles;
 
 /**
  * Configuration specific for {@code h2} profile. This configuration uses Spring
@@ -30,7 +31,7 @@ import com.jipasoft.repository.h2.BaseRepositoryImpl;
  *
  */
 @Configuration
-@Profile("h2")
+@Profile(Profiles.H2)
 @EnableJpaRepositories(basePackageClasses = BaseRepositoryImpl.class)
 public class H2Config {
 

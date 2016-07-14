@@ -26,6 +26,9 @@ import org.springframework.orm.hibernate4.support.OpenSessionInViewFilter;
 import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
 
 import com.jipasoft.repository.mysql.BaseRepositoryImpl;
+import com.jipasoft.util.Profiles;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Configuration specific to the {@code mysql} profile. This configuration uses
@@ -35,12 +38,14 @@ import com.jipasoft.repository.mysql.BaseRepositoryImpl;
  * @author Julius Krah
  *
  */
+@Slf4j
 @Configuration
-@Profile("mysql")
+@Profile(Profiles.MYSQL)
 @ComponentScan(basePackageClasses = BaseRepositoryImpl.class)
 public class MySQLConfig {
 	@Bean
 	public HibernateJpaSessionFactoryBean sessionFactory() {
+		log.info("Starting session factory bean");
 		return new HibernateJpaSessionFactoryBean();
 	}
 

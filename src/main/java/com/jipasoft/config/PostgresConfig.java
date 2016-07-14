@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.jipasoft.repository.postgres.BaseRepositoryImpl;
+import com.jipasoft.util.Profiles;
 
 /**
  * Configuration specific to the {@code postgres} profile. The implementation of JPA here
@@ -29,7 +30,7 @@ import com.jipasoft.repository.postgres.BaseRepositoryImpl;
  *
  */
 @Configuration
-@Profile("postgres")
+@Profile(Profiles.POSTGRES)
 @ComponentScan(basePackageClasses = BaseRepositoryImpl.class)
 public class PostgresConfig {
 

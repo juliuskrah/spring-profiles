@@ -26,6 +26,6 @@ import com.jipasoft.repository.UserRepository;
  * @author Julius Krah
  *
  */
-public interface UserRepositoryImpl extends UserRepository, Repository<User, Integer> {
+public interface UserRepositoryImpl extends UserRepository, Repository<User, String> {
 
 }

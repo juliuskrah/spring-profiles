@@ -79,7 +79,7 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Optional<User> findAccountById(Integer id) {
+	public Optional<User> findAccountById(String id) {
 		log.debug("Retrieving user with id {} from the database...", id);
 		return userRepository.get().findOneById(id);
 	}

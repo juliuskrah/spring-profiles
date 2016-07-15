@@ -15,8 +15,6 @@
 */
 package com.jipasoft.domain;
 
-import static javax.persistence.GenerationType.AUTO;
-
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Set;
@@ -33,6 +31,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
@@ -47,8 +47,9 @@ import lombok.ToString;
 public class User extends AbstractAuditEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy = AUTO)
-	private Integer id;
+	@GeneratedValue(generator = "uuid2")
+	@GenericGenerator(name = "uuid2", strategy = "uuid2")
+	private String id;
 
 	@NotNull
 	@Pattern(regexp = "^[a-z0-9]*$|(anonymousUser)")
@@ -56,7 +57,6 @@ public class User extends AbstractAuditEntity implements Serializable {
 	@Column(unique = true)
 	private String login;
 
-	
 	@NotNull
 	@Size(min = 60, max = 60)
 	@Column(name = "password_hash")

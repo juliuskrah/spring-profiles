@@ -34,7 +34,7 @@ import com.jipasoft.repository.UserRepository;
  *
  */
 @Repository
-public class UserRepositoryImpl extends BaseRepositoryImpl<User, Integer> implements UserRepository {
+public class UserRepositoryImpl extends BaseRepositoryImpl<User, String> implements UserRepository {
 
 	public UserRepositoryImpl() {
 		super(User.class);

@@ -53,8 +53,8 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: bigint
-                  autoIncrement: ${autoIncrement}
+                  type: char(36)
+                  # autoIncrement: ${autoIncrement}
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -143,7 +143,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: account_id
-                  type: bigint
+                  type: char(36)
                   constraints:
                     nullable: false
               - column:

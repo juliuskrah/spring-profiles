@@ -33,7 +33,7 @@ import lombok.Data;
 
 @Data
 public class UserDTO {
-	private Integer id;
+	private String id;
 
 	@NotNull
 	@Pattern(regexp = "^[a-z0-9]*$|(anonymousUser)")

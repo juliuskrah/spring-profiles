@@ -71,7 +71,7 @@ public class AccountController {
 
 	@GetMapping(path = "update/{id}")
 	public String update(Model model, @RequestHeader(value = "X-Requested-With", required = false) String requestedWith,
-			@PathVariable int id) {
+			@PathVariable String id) {
 		Optional<User> user = accountService.findAccountById(id);
 		UserDTO userDTO = new UserDTO();
 
@@ -131,7 +131,7 @@ public class AccountController {
 
 	@ResponseBody
 	@DeleteMapping("delete/{id}")
-	public String delete(@PathVariable int id, Locale loc) {
+	public String delete(@PathVariable String id, Locale loc) {
 		Optional<User> user = accountService.findAccountById(id);
 		if (user.isPresent()) {
 			accountService.deleteAccount(user.get());

@@ -55,7 +55,7 @@ public interface AccountService {
 	 * @return {@code Optional<User>} the optional user object. This is never
 	 *         null
 	 */
-	public Optional<User> findAccountById(Integer id);
+	public Optional<User> findAccountById(String id);
 
 	/**
 	 * This brings one unique user from the database

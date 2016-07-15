@@ -26,7 +26,7 @@ import com.jipasoft.domain.User;
  * @author Julius Krah
  *
  */
-public interface UserRepository extends BaseRepository<User, Integer> {
+public interface UserRepository extends BaseRepository<User, String> {
 
 	/**
 	 * Retrieves a {@link User} entity from the underlying datastore by its

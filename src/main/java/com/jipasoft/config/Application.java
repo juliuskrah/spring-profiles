@@ -62,7 +62,7 @@ import com.jipasoft.web.Controllers;
  */
 @SpringBootApplication(scanBasePackageClasses = { Controllers.class, Services.class })
 @EntityScan(basePackageClasses = AbstractAuditEntity.class)
-@Import(value = { H2Config.class, PostgresConfig.class, MySQLConfig.class, SecurityConfig.class })
+@Import(value = { H2Config.class, PostgresConfig.class, MySQLConfig.class, MongoConfig.class, SecurityConfig.class })
 public class Application extends WebMvcConfigurerAdapter {
 
 	public static void main(String[] args) {

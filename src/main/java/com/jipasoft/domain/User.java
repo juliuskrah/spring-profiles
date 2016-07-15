@@ -32,6 +32,8 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -39,14 +41,23 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+/**
+ * A user.
+ * 
+ * @author Julius Krah
+ */
 @Data
 @Entity
+@Document(collection = "account")
 @Table(name = "account")
 @ToString(exclude = { "password", "authorities" })
 @EqualsAndHashCode(callSuper = true)
 public class User extends AbstractAuditEntity implements Serializable {
+
 	private static final long serialVersionUID = 1L;
+
 	@Id
+	@org.springframework.data.annotation.Id
 	@GeneratedValue(generator = "uuid2")
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
 	private String id;
@@ -64,9 +75,11 @@ public class User extends AbstractAuditEntity implements Serializable {
 	private String password;
 
 	@Size(max = 50)
+	@Field("first_name")
 	private String firstName;
 
 	@Size(max = 50)
+	@Field("last_name")
 	private String lastName;
 
 	@NotNull
@@ -78,13 +91,16 @@ public class User extends AbstractAuditEntity implements Serializable {
 	private boolean activated = false;
 
 	@Size(max = 20)
+	@Field("activation_key")
 	@JsonIgnore
 	private String activationKey;
 
 	@Size(max = 20)
+	@Field("reset_key")
 	@JsonIgnore
 	private String resetKey;
 
+	@Field("reset_date")
 	private ZonedDateTime resetDate = null;
 
 	@ManyToMany

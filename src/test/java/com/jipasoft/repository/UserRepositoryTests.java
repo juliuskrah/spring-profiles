@@ -35,7 +35,7 @@ import com.jipasoft.config.ApplicationTests;
 import com.jipasoft.domain.User;
 import com.jipasoft.util.Profiles;
 
-@ActiveProfiles(Profiles.H2)
+@ActiveProfiles(Profiles.MONGO)
 @Transactional
 public class UserRepositoryTests extends ApplicationTests {
 	private static final Logger log = LoggerFactory.getLogger(UserRepositoryTests.class);

@@ -23,7 +23,7 @@ spring:
       database: 
       port: 27017
       host: localhost
-      authentication-database: 
-      password: 
-      username: 
+      authentication-database:
+      password:
+      username:
       

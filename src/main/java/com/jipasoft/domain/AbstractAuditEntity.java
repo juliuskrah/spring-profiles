@@ -23,8 +23,16 @@ import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.springframework.data.mongodb.core.mapping.Field;
+
 import lombok.Data;
 
+/**
+ * Base abstract class for entities which will hold definitions for created, last modified by and created,
+ * last modified by date.
+ * 
+ * @author Julius Krah
+ */
 @Data
 @MappedSuperclass
 public abstract class AbstractAuditEntity implements Serializable {
@@ -32,15 +40,19 @@ public abstract class AbstractAuditEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@NotNull
+	@Field("created_by")
 	@Size(min = 1, max = 50)
 	@Column(updatable = false)
 	private String createdBy;
 
+	@Field("created_date")
 	@Column(nullable = false)
 	private ZonedDateTime createdDate = ZonedDateTime.now();
 
+	@Field("last_modified_by")
 	@Size(max = 50)
 	private String lastModifiedBy;
 
+	@Field("last_modified_date  ")
 	private ZonedDateTime lastModifiedDate;
 }

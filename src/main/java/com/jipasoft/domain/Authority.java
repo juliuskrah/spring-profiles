@@ -20,23 +20,33 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * An authority (a security role) used by Spring Security.
+ * 
+ * @author Julius Krah
+ */
 @Data
 @Entity
+@Document(collection = "role")
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "role")
 public class Authority implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
-	public Authority(String name) {
-		this.name = name;
-	}
-
 	@Id
+	@NotNull
+	@org.springframework.data.annotation.Id
 	@Size(min = 1, max = 50)
 	private String name;
 

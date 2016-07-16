@@ -55,7 +55,7 @@ public class UserRepositoryTests extends ApplicationTests {
 		user.setResetKey("aw55asa7d5Sdcs8dAsa8");
 		user.setCreatedBy("system");
 		user.setPassword("$2a$10$mE.qmcV0mFU5NcKh73TZx.z4ueI/.bDWbj0T1BYyqP481kGGarKLG");
-		user.setAuthorities(Stream.of(new Authority("ROLE_ADMIN")).collect(Collectors.toSet()));
+		user.setAuthorities(Stream.of(new Authority("ROLE_ADMIN"), new Authority("ROLE_USER")).collect(Collectors.toSet()));
 
 		userRepository.save(user);
 	}

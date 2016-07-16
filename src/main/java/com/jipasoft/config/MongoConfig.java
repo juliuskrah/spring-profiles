@@ -15,8 +15,15 @@
 */
 package com.jipasoft.config;
 
+import static com.jipasoft.domain.util.JSR310DateConverters.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.data.mongodb.core.convert.CustomConversions;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import com.jipasoft.repository.mongo.BaseRepositoryImpl;
@@ -33,5 +40,16 @@ import com.jipasoft.util.Profiles;
 @Configuration
 @EnableMongoRepositories(basePackageClasses = BaseRepositoryImpl.class)
 public class MongoConfig {
-
+	
+	@Bean
+	public CustomConversions customConversions() {
+		List<Converter<?, ?>> converters = new ArrayList<>();
+		converters.add(DateToZonedDateTimeConverter.INSTANCE);
+		converters.add(ZonedDateTimeToDateConverter.INSTANCE);
+		converters.add(DateToLocalDateConverter.INSTANCE);
+		converters.add(LocalDateToDateConverter.INSTANCE);
+		converters.add(DateToLocalDateTimeConverter.INSTANCE);
+		converters.add(LocalDateTimeToDateConverter.INSTANCE);
+		return new CustomConversions(converters);
+	}
 }

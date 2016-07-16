@@ -22,6 +22,8 @@ import static org.junit.Assert.assertThat;
 
 import java.time.ZonedDateTime;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -32,10 +34,11 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jipasoft.config.ApplicationTests;
+import com.jipasoft.domain.Authority;
 import com.jipasoft.domain.User;
 import com.jipasoft.util.Profiles;
 
-@ActiveProfiles(Profiles.MONGO)
+@ActiveProfiles(Profiles.H2)
 @Transactional
 public class UserRepositoryTests extends ApplicationTests {
 	private static final Logger log = LoggerFactory.getLogger(UserRepositoryTests.class);
@@ -50,8 +53,9 @@ public class UserRepositoryTests extends ApplicationTests {
 		user.setEmail("juliuskrah@gmail.com");
 		user.setLogin("julius");
 		user.setResetKey("aw55asa7d5Sdcs8dAsa8");
-		user.setCreatedBy("System");
+		user.setCreatedBy("system");
 		user.setPassword("$2a$10$mE.qmcV0mFU5NcKh73TZx.z4ueI/.bDWbj0T1BYyqP481kGGarKLG");
+		user.setAuthorities(Stream.of(new Authority("ROLE_ADMIN")).collect(Collectors.toSet()));
 
 		userRepository.save(user);
 	}

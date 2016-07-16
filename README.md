@@ -4,14 +4,16 @@
 This section contains the pre-requisite to run the application, how to run the application and how to use some of the application features.
 
 ### Pre-requisite
-Not much is involved to run this application. You only need two items:
+Not much is needed to run this application. You only need two things:
 
 *Required*
+
 * [Maven][] 3.3+
 * [Git][]
 * [JDK][] 8+
 
 *Optional*
+
 * [MySQL][]
 * [PostgreSQL][]
 * [MongoDB][]
@@ -25,7 +27,7 @@ To run the project, first navigate into the source directory `cd spring-profiles
 When you execute the `mvn` command, two things are happening here.
 
 * `spring-boot:run`: first it executes the Spring-Boot maven plugin
-* `--spring.profiles.active=h2`: second it starts the project with the `h2` profile active
+* `--spring.profiles.active=h2`: second it starts the project with the `h2` profile active; Passing it as commandline arguments
 
 With this in mind, you don't have to worry about setting up a database. The application starts an undertow server instance on port `8080`.
 > [`http://localhost:8080`][1]

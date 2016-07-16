@@ -6,8 +6,15 @@ This section contains the pre-requisite to run the application, how to run the a
 ### Pre-requisite
 Not much is involved to run this application. You only need two items:
 
+*Required*
 * [Maven][] 3.3+
 * [Git][]
+* [JDK][] 8+
+
+*Optional*
+* [MySQL][]
+* [PostgreSQL][]
+* [MongoDB][]
 
 ### Getting the Project
 Get the project from the source repository
@@ -31,6 +38,21 @@ It's that easy.
 
 ### Application Features
 -- application features go here
+
+## Technology Stack
+* [Spring-Boot][]
+* [Hibernate][]
+* [Spring Data MongoDB][]
+* [Thymeleaf][]
+* [Jackson Datatype][]
+* [JQuery][]
+* [MongoBee][]
+* [Liquibase][]
+* [Spring Data JPA][]
+* [Spring Security][security]
+* [Java Mail][]
+* [Project Lombok][]
+* [Undertow Server][]
 
 ## Introduction
 [Spring][] [Profiles][] provide a way to segregate parts of your application configuration and make it only available in certain environments. Any [`@Component`][Component] or [`@Configuration`][Configuration] can be marked with [`@Profile`][Profile] to limit when it is loaded:
@@ -167,9 +189,19 @@ The H2 profile is the default profile for this application if no active profile 
 [comment]: # (Reference links are not case sensitive)
 
 [1]: http://localhost:8080
-[2]: http://localhost:8080/login
-[Maven]: http://maven.apache.org/
-[Git]: https://git-scm.com/
+[2]: http://localhost:8080/login "Login to Spring-Profiles"
+[Maven]: http://maven.apache.org/ "Maven"
+[Git]: https://git-scm.com/ "Git"
+[MongoBee]: https://github.com/mongobee/mongobee/wiki/How-to-use-mongobee "MongoBee database migration tool"
+[Spring-Boot]: http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/ "Spring Boot"
+[Jackson Datatype]: https://github.com/FasterXML/jackson-datatype-jsr310
+[Thymeleaf]: http://www.thymeleaf.org/doc/tutorials/2.1/thymeleafspring.html
+[JQuery]: https://api.jquery.com
+[Java Mail]: https://java.net/projects/javamail/pages/Home
+[Project Lombok]: http://jnb.ociweb.com/jnb/jnbJan2010.html
+[Liquibase]: http://www.liquibase.org/documentation/index.html
+[Undertow Server]: http://undertow.io/undertow-docs/undertow-docs-1.3.0/index.html
+[JDK]: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 [security]: http://docs.spring.io/spring-security/site/docs/4.1.1.RELEASE/reference/htmlsingle/
 [bean]: http://www.tutorialspoint.com/spring/spring_bean_definition.htm "Spring Beans"
 [Spring Data MongoDB]: http://docs.spring.io/spring-data/data-mongo/docs/1.9.2.RELEASE/reference/html/ "Spring Data MongoDB"

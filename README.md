@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/juliuskrah/spring-profiles.svg?branch=master)](https://travis-ci.org/juliuskrah/spring-profiles)
+
 # Spring Profiles Project
 
 ## Quick Start
@@ -35,7 +37,7 @@ With this in mind, you don't have to worry about setting up a database. The appl
 Use the link above to access the application. The application is secured with [Spring Security][security] and you would be redirected to a login page [`http://localhost:8080/login`][2]
 > username: `admin`  
   password: `admin`
-  
+
 It's that easy.
 
 ### Application Features
@@ -134,7 +136,7 @@ public class UserRepositoryImpl extends BaseRepositoryImpl<User, Integer> implem
 
 The above bean of type `com.jipasoft.repository.UserRepository` gets loaded only if the `mysql` profile is active.
 
-The following bean is also of type `com.jipasoft.repository.UserRepository`. 
+The following bean is also of type `com.jipasoft.repository.UserRepository`.
 
 ```java
 package com.jipasoft.repository.postgres;
@@ -162,7 +164,7 @@ public class UserRepositoryImpl extends BaseRepositoryImpl<User, Integer> implem
 		query.setParameter("resetKey", resetKey);
 		return Optional.of((User) query.getSingleResult());
 	}
-	
+
 	@Override
 	public Optional<User> findOneByEmail(String email) {
 		Query query = this.em.createQuery("SELECT u FROM User u WHERE u.email LIKE :email");

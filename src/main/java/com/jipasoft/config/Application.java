@@ -26,6 +26,7 @@ import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
@@ -41,6 +42,7 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.jipasoft.aop.exceptions.ExceptionAspect;
 import com.jipasoft.domain.AbstractAuditEntity;
 import com.jipasoft.service.Services;
 import com.jipasoft.web.Controllers;
@@ -60,7 +62,8 @@ import com.jipasoft.web.Controllers;
  * @author Julius Krah
  *
  */
-@SpringBootApplication(scanBasePackageClasses = { Controllers.class, Services.class })
+@EnableAspectJAutoProxy
+@SpringBootApplication(scanBasePackageClasses = { Controllers.class, Services.class, ExceptionAspect.class })
 @EntityScan(basePackageClasses = AbstractAuditEntity.class)
 @Import(value = { H2Config.class, PostgresConfig.class, MySQLConfig.class, MongoConfig.class, SecurityConfig.class })
 public class Application extends WebMvcConfigurerAdapter {

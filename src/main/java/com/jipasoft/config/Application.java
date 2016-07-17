@@ -17,11 +17,17 @@ package com.jipasoft.config;
 
 import java.util.Locale;
 
+import javax.inject.Inject;
+import javax.sql.DataSource;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
+import org.springframework.boot.autoconfigure.mongo.MongoProperties;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.context.embedded.ErrorPage;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -29,6 +35,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -42,10 +49,16 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.github.mongobee.Mongobee;
 import com.jipasoft.aop.exceptions.ExceptionAspect;
 import com.jipasoft.domain.AbstractAuditEntity;
 import com.jipasoft.service.Services;
+import com.jipasoft.util.Profiles;
 import com.jipasoft.web.Controllers;
+import com.mongodb.Mongo;
+
+import liquibase.integration.spring.SpringLiquibase;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Application root configuration. The
@@ -62,11 +75,21 @@ import com.jipasoft.web.Controllers;
  * @author Julius Krah
  *
  */
+@Slf4j
 @EnableAspectJAutoProxy
 @SpringBootApplication(scanBasePackageClasses = { Controllers.class, Services.class, ExceptionAspect.class })
+@EnableConfigurationProperties({ LiquibaseProperties.class })
 @EntityScan(basePackageClasses = AbstractAuditEntity.class)
 @Import(value = { H2Config.class, PostgresConfig.class, MySQLConfig.class, MongoConfig.class, SecurityConfig.class })
 public class Application extends WebMvcConfigurerAdapter {
+	@Inject
+	private LiquibaseProperties liquibaseProperties;
+	@Inject
+	private MongoProperties mongoProperties;
+	@Inject
+	private Mongo mongo;
+	@Inject
+	private Environment env;
 
 	public static void main(String[] args) {
 		SpringApplication app = new SpringApplication(Application.class);
@@ -116,6 +139,49 @@ public class Application extends WebMvcConfigurerAdapter {
 		// objectMapper.configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS,
 		// false);
 		return objectMapper;
+	}
+
+	/**
+	 * SQL database migration
+	 * 
+	 * @param dataSource
+	 * @return
+	 */
+	@Bean
+	public SpringLiquibase liquibase(DataSource dataSource) {
+		SpringLiquibase liquibase = new SpringLiquibase();
+		liquibase.setDataSource(dataSource);
+		liquibase.setChangeLog(liquibaseProperties.getChangeLog());
+		liquibase.setContexts(liquibaseProperties.getContexts());
+		liquibase.setDefaultSchema(liquibaseProperties.getDefaultSchema());
+		liquibase.setDropFirst(liquibaseProperties.isDropFirst());
+		if (env.acceptsProfiles(Profiles.MONGO))
+			liquibase.setShouldRun(false);
+		else {
+			liquibase.setShouldRun(liquibaseProperties.isEnabled());
+			log.trace("Configuring Liquibase...");
+		}
+
+		return liquibase;
+	}
+
+	/**
+	 * Database migration
+	 * 
+	 * @return Mongobee
+	 */
+	@Bean
+	public Mongobee mongobee() {
+		log.trace("Configuring Mongobee...");
+		Mongobee mongobee = new Mongobee(mongo);
+		mongobee.setDbName(mongoProperties.getDatabase());
+		// package to scan for migrations
+		mongobee.setChangeLogsScanPackage("com.jipasoft.config.dbmigrations");
+		// set environment to process @Profile on
+		// 'com.jipasoft.config.dbmigrations.InitialSetupMigration'
+		mongobee.setSpringEnvironment(env);
+		mongobee.setEnabled(true);
+		return mongobee;
 	}
 
 	/**

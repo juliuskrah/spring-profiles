@@ -1,15 +1,46 @@
+/*
+* Copyright 2016, Julius Krah
+* by the @authors tag. See the LICENCE in the distribution for a
+* full listing of individual contributors.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+* http://www.apache.org/licenses/LICENSE-2.0
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
 package com.jipasoft.config.dbmigrations;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.context.annotation.Profile;
+
 import com.github.mongobee.changeset.ChangeLog;
 import com.github.mongobee.changeset.ChangeSet;
+import com.jipasoft.util.Profiles;
+import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 
+import lombok.extern.slf4j.Slf4j;
+
+/**
+ * This a class annotated with {@link ChangeLog @ChangeLog} that tells Mongobee
+ * that it's a changelog class<br/>
+ * Database migrations are created here
+ * 
+ * @author Julius Krah
+ *
+ */
+@Slf4j
+@Profile(Profiles.MONGO)
 @ChangeLog(order = "001")
 @SuppressWarnings("unchecked")
 public class InitialSetupMigration {
@@ -26,6 +57,8 @@ public class InitialSetupMigration {
 
 	@ChangeSet(order = "01", author = "julius", id = "01-addRoles")
 	public void addRoles(DB db) {
+		log.info("Inserting document into 'role'...");
+		// Get the 'role' collection
 		DBCollection authorityCollection = db.getCollection("role");
 		//@formatter:off
 		authorityCollection.insert(BasicDBObjectBuilder.start()
@@ -36,14 +69,19 @@ public class InitialSetupMigration {
 				.add("_id", "ROLE_USER")
 				.get()
 		);
+		log.info("Acquired changelog on 'role'");
 		//@formatter:on
 	}
 
 	@ChangeSet(order = "02", author = "julius", id = "02-addAccounts")
 	public void addAccounts(DB db) {
+		log.info("Inserting document into 'account'...");
+		// Get the 'account' collection
 		DBCollection usersCollection = db.getCollection("account");
-		usersCollection.createIndex("login");
-		usersCollection.createIndex("email");
+		// Set a unique constraint on 'login' field
+		usersCollection.createIndex(new BasicDBObject("login", 1), "login", true);
+		// Set a unique constraint on 'email' field
+		usersCollection.createIndex(new BasicDBObject("email", 1), "email", true);
 		//@formatter:off
 		usersCollection.insert(BasicDBObjectBuilder.start()
 				.add("_id", "user-0")
@@ -97,6 +135,7 @@ public class InitialSetupMigration {
 				.add("authorities", authoritiesUser)
 				.get()
 		);
+		log.info("Acquired changelog on 'account'");
 		//@formatter:on
 	}
 }

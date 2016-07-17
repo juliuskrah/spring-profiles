@@ -45,7 +45,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MySQLConfig {
 	@Bean
 	public HibernateJpaSessionFactoryBean sessionFactory() {
-		log.info("Starting session factory bean");
+		log.debug("Starting SessionFactory bean");
 		return new HibernateJpaSessionFactoryBean();
 	}
 

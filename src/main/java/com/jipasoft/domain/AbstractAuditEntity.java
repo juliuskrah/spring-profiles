@@ -23,13 +23,17 @@ import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import lombok.Data;
 
 /**
- * Base abstract class for entities which will hold definitions for created, last modified by and created,
- * last modified by date.
+ * Base abstract class for entities which will hold definitions for created,
+ * last modified by and created, last modified by date.
  * 
  * @author Julius Krah
  */
@@ -43,16 +47,20 @@ public abstract class AbstractAuditEntity implements Serializable {
 	@Field("created_by")
 	@Size(min = 1, max = 50)
 	@Column(updatable = false)
+	@CreatedBy
 	private String createdBy;
 
 	@Field("created_date")
 	@Column(nullable = false)
+	@CreatedDate
 	private ZonedDateTime createdDate = ZonedDateTime.now();
 
 	@Field("last_modified_by")
 	@Size(max = 50)
+	@LastModifiedBy
 	private String lastModifiedBy;
 
-	@Field("last_modified_date  ")
+	@Field("last_modified_date")
+	@LastModifiedDate
 	private ZonedDateTime lastModifiedDate;
 }

@@ -23,6 +23,7 @@ import javax.sql.DataSource;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.autoconfigure.mongo.MongoProperties;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
@@ -171,6 +172,7 @@ public class Application extends WebMvcConfigurerAdapter {
 	 * @return Mongobee
 	 */
 	@Bean
+	@ConditionalOnExpression("#{environment.acceptsProfiles('" + Profiles.MONGO + "')}")
 	public Mongobee mongobee() {
 		log.trace("Configuring Mongobee...");
 		Mongobee mongobee = new Mongobee(mongo);

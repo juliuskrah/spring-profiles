@@ -21,5 +21,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class ExceptionAspect {
+	//@Inject
+	//private JavaMailSender javaMailSender;
 
 }

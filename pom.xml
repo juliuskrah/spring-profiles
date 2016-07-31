@@ -29,17 +29,20 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.3.6.RELEASE</version>
+		<version>1.4.0.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
 		<java.version>1.8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.version>4.3.1.RELEASE</spring.version>
+		<thymeleaf.version>3.0.0.RELEASE</thymeleaf.version>
+		<thymeleaf-layout-dialect.version>2.0.0</thymeleaf-layout-dialect.version>
+		<thymeleaf-extras-springsecurity4.version>3.0.0.RELEASE</thymeleaf-extras-springsecurity4.version>
 	</properties>
 
 	<dependencies>
+		<!-- tag::spring-boot[] -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -50,6 +53,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<!-- end::spring-boot[] -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
@@ -88,7 +92,6 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.16.6</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>

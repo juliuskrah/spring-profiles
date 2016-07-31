@@ -15,10 +15,8 @@
 */
 package com.jipasoft.repository;
 
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
 
 import java.time.ZonedDateTime;
 import java.util.Optional;
@@ -65,7 +63,7 @@ public class UserRepositoryTests extends ApplicationTests {
 		User user = userRepository.findOneByLogin("julius").get();
 		assertNotNull(user);
 		log.debug("user: {} was created on {} with id {}", user.getLogin(), user.getCreatedDate(), user.getId());
-		assertThat(user.getLogin(), is("julius"));
+		assertThat(user.getLogin()).isEqualTo("julius");
 	}
 
 	@Test
@@ -85,7 +83,7 @@ public class UserRepositoryTests extends ApplicationTests {
 		u = userRepository.findOneByEmail("JuliusKrah@hotmail.com").get();
 		assertNotNull(u);
 
-		assertThat(u.getEmail(), is("JuliusKrah@hotmail.com"));
+		assertThat(u.getEmail()).isEqualTo("JuliusKrah@hotmail.com");
 		log.debug("updated user: {}'s info. user id: {}, user email: {}, date created: {}, date modified {}", u.getLogin(), u.getId(),
 				u.getEmail(), u.getCreatedDate(), u.getLastModifiedDate());
 	}
@@ -103,7 +101,7 @@ public class UserRepositoryTests extends ApplicationTests {
 		user = null;
 
 		user = userRepository.findOneByResetKey("aw55asa7d5Sdcs7dAsa8").get();
-		assertThat(user.getResetKey(), is("aw55asa7d5Sdcs7dAsa8"));
+		assertThat(user.getResetKey()).isEqualTo("aw55asa7d5Sdcs7dAsa8");
 
 		log.debug("user: {} with id {} requested reset key: {} on {}", user.getLogin(), user.getId(), user.getResetKey(),
 				user.getResetDate());
@@ -116,7 +114,7 @@ public class UserRepositoryTests extends ApplicationTests {
 
 		userRepository.delete(user);
 		user = userRepository.findOneByLogin("julius").orElse(null);
-		assertNull(user);
+		assertThat(user).isNull();
 	}
 
 	@Test
@@ -126,6 +124,6 @@ public class UserRepositoryTests extends ApplicationTests {
 
 		User userById = userRepository.findOneById(user.getId()).get();
 		assertNotNull(userById);
-		assertThat(user.getId(), is(userById.getId()));
+		assertThat(user.getId()).isEqualTo(userById.getId());
 	}
 }

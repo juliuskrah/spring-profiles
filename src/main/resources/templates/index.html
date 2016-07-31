@@ -18,8 +18,8 @@
 <html>
 <head
 	th:include="fragments/header :: head(title = 'Spring Profiles : ' + #{home.welcome})">
-<meta charset="UTF-8" />
-<link href="../static/css/bootstrap.min.css" />
+<meta charset="UTF-8">
+<link href="../static/css/bootstrap.min.css">
 <title>Home</title>
 </head>
 <body>
@@ -60,7 +60,7 @@
 				<span th:text="#{${message}(${name})}">Test</span>
 			</div>
 		</th:block>
-		<div class="alert alert-success alert-dismissable"  id="delete">
+		<div class="alert alert-success alert-dismissable" id="delete">
 			<button type="button" class="close" data-dismiss="alert"
 				aria-hidden="true">&times;</button>
 			<span>Test</span>
@@ -103,36 +103,67 @@
 			});
 		});
 
-		$.ajax({url : "user/find_all",
-			success : function(response) {
-				$("#delete").hide();
-				$("tr:has(td)").remove();
+		$
+				.ajax({
+					url : "user/find_all",
+					success : function(response) {
+						$("#delete").hide();
+						$("tr:has(td)").remove();
 
-				$.each(response, function(i, item) {
-					$('<tr>').append(
-						$('<td>').append(
-							$('<a>').attr({
-								href : '#',
-								onclick : "update('user/update/" + item.id + "')",
-								'data-toggle' : 'modal',
-								'data-target' : '#myModal'
-							}).text(item.login)
-						),
-						$('<td>').text(item.firstName),
-						$('<td>').text(item.lastName),
-						$('<td>').text(item.email),
-						$('<td>').text(item.activated),
-						$('<td>').text(item.createdBy),
-						$('<td>').text(item.createdDate),
-						$('<td>').append(
-							$('<button>').attr({
-								onclick : "deleteUser('user/delete/" + item.id + "', this)"
-							}).addClass('btn btn-danger glyphicon glyphicon-remove')
-						)
-					).appendTo('tbody');
+						$
+								.each(
+										response,
+										function(i, item) {
+											$('<tr>')
+													.append(
+															$('<td>')
+																	.append(
+																			$(
+																					'<a>')
+																					.attr(
+																							{
+																								href : '#',
+																								onclick : "update('user/update/"
+																										+ item.id
+																										+ "')",
+																								'data-toggle' : 'modal',
+																								'data-target' : '#myModal'
+																							})
+																					.text(
+																							item.login)),
+															$('<td>')
+																	.text(
+																			item.firstName),
+															$('<td>')
+																	.text(
+																			item.lastName),
+															$('<td>').text(
+																	item.email),
+															$('<td>')
+																	.text(
+																			item.activated),
+															$('<td>')
+																	.text(
+																			item.createdBy),
+															$('<td>')
+																	.text(
+																			item.createdDate),
+															$('<td>')
+																	.append(
+																			$(
+																					'<button>')
+																					.attr(
+																							{
+																								onclick : "deleteUser('user/delete/"
+																										+ item.id
+																										+ "', this)"
+																							})
+																					.addClass(
+																							'btn btn-danger glyphicon glyphicon-remove')))
+													.appendTo('tbody');
+										});
+					}
 				});
-			}
-		});
 
 		/* Fill in modal with content loaded via Ajax */
 		function update(url) {

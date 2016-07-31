@@ -17,12 +17,12 @@ package com.jipasoft.config;
 
 import javax.servlet.Filter;
 
-import org.springframework.boot.context.embedded.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.orm.hibernate4.support.OpenSessionInViewFilter;
+import org.springframework.orm.hibernate5.support.OpenSessionInViewFilter;
 import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
 
 import com.jipasoft.repository.mysql.BaseRepositoryImpl;

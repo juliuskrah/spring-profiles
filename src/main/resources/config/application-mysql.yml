@@ -16,12 +16,11 @@
 
 spring:
   datasource:
-    connection-timeout: 10000
-    initial-size: 5
-    max-active: 10
-    max-idle: 10
-    url: jdbc:mysql://localhost:3306/profiles?autoReconnect=true&useSSL=false
+    hikari:
+      connection-timeout: 10000
+      jdbc-url: jdbc:mysql://localhost:3306/profiles?autoReconnect=true&useSSL=false
+      driver-class-name: com.mysql.jdbc.Driver
   jpa:
     database: mysql
     properties:
-      hibernate.current_session_context_class: org.springframework.orm.hibernate4.SpringSessionContext
+      hibernate.current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext

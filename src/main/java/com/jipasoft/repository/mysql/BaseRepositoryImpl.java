@@ -101,7 +101,6 @@ public class BaseRepositoryImpl<T, ID extends Serializable> implements BaseRepos
 	/**
 	 * {@inheritDoc}
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public Optional<T> findOneById(ID id) {
 		Session session = this.sessionFactory.get().getCurrentSession();

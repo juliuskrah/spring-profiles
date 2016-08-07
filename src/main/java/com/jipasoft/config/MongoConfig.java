@@ -25,6 +25,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.mongodb.core.convert.CustomConversions;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
+import com.jipasoft.domain.util.JSR310DateConverters;
 import com.jipasoft.domain.util.JSR310DateConverters.DateToLocalDateConverter;
 import com.jipasoft.domain.util.JSR310DateConverters.DateToLocalDateTimeConverter;
 import com.jipasoft.domain.util.JSR310DateConverters.DateToZonedDateTimeConverter;
@@ -51,6 +52,7 @@ public class MongoConfig {
 	 * MongoDB has difficulty understanding the new Java Time API
 	 * 
 	 * @return CustomConversions the Converters
+	 * @see JSR310DateConverters
 	 */
 	@Bean
 	public CustomConversions customConversions() {

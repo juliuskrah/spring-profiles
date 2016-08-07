@@ -16,12 +16,27 @@
 package com.jipasoft.aop.exceptions;
 
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+/**
+ * When an exception is encountered in the application, it will send an email to
+ * the developer.<br />
+ * It may also send the <i>Stacktrace</i> of the error depending on the
+ * configured property of the application.<br />
+ * <p>
+ * 
+ * The application's email feature can be enabled when the {@code aspect}
+ * profile is active.
+ * </p>
+ * @author Julius Krah
+ *
+ */
 @Aspect
 @Component
+@Profile("aspect")
 public class ExceptionAspect {
-	//@Inject
-	//private JavaMailSender javaMailSender;
+	// @Inject
+	// private JavaMailSender javaMailSender;
 
 }

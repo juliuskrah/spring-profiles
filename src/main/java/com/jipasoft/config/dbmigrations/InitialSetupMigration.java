@@ -55,6 +55,11 @@ public class InitialSetupMigration {
 		authoritiesAdminAndUser[1].put("_id", "ROLE_ADMIN");
 	}
 
+	/**
+	 * Initialize the roles Collection
+	 * 
+	 * @param db
+	 */
 	@ChangeSet(order = "01", author = "julius", id = "01-addRoles")
 	public void addRoles(DB db) {
 		log.info("Inserting document into 'role'...");
@@ -73,6 +78,11 @@ public class InitialSetupMigration {
 		//@formatter:on
 	}
 
+	/**
+	 * Intilialize the accounts collection
+	 * 
+	 * @param db
+	 */
 	@ChangeSet(order = "02", author = "julius", id = "02-addAccounts")
 	public void addAccounts(DB db) {
 		log.info("Inserting document into 'account'...");

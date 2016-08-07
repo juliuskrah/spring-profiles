@@ -65,10 +65,22 @@ import lombok.extern.slf4j.Slf4j;
  * {@link Configuration @Configuration}, and <br />
  * {@link EnableAutoConfiguration @EnableAutoConfiguration}. The
  * {@code scanBasePackageClasses} in this context is type safe.
+ * <p>
+ * The application can run on multiple profiles to support different types of
+ * databases, relational and non-relational.<br />
+ * In the current state, the application runs on:
+ * <ol>
+ * <li>{@link H2Config H2 Database}</li>
+ * <li>{@link PostgresConfig PostgreSQL Database}</li>
+ * <li>{@link MySQLConfig MySQL Database}</li>
+ * <li>{@link MongoConfig MongoDB}</li>
+ * </ol>
+ * </p>
  * 
  * @see H2Config
  * @see PostgresConfig
  * @see MySQLConfig
+ * @see MongoConfig
  * 
  * @author Julius Krah
  *
@@ -89,30 +101,56 @@ public class Application extends WebMvcConfigurerAdapter {
 	@Inject
 	private Environment env;
 
+	/**
+	 * Entry point of the application
+	 * 
+	 * @param args
+	 *            The arguments passed in from the command line
+	 */
 	public static void main(String[] args) {
 		SpringApplication app = new SpringApplication(Application.class);
 		app.run(args);
 	}
 
+	/**
+	 * {@link PasswordEncoder} bean.
+	 * 
+	 * @return <b>{@code BCryptPasswordEncoder}</b> with strength (passed as
+	 *         argument) the log rounds to use, between 4 and 31
+	 */
 	@Bean
 	public PasswordEncoder encoder() {
 		return new BCryptPasswordEncoder(10);
 	}
 
 	/**
-	 * i18n support bean
+	 * i18n support bean. The locale resolver being used is Cookie.<br />
+	 * When locale is changed and intercepted by the
+	 * {@link Application#localeChangeInterceptor localeChangeInterceptor}.
+	 * <br />
+	 * The new locale is stored in a Cookie and remains active even after
+	 * session timeout<br />
+	 * or session being invalidated
+	 * <p>
+	 * Set a fixed Locale to <em>US</em> that this resolver will return if no
+	 * cookie found.
+	 * </p>
 	 * 
-	 * @return
+	 * @return {@code LocaleResolver}
+	 * @see Application#localeChangeInterceptor
 	 */
 	@Bean
 	public LocaleResolver localeResolver() {
-		CookieLocaleResolver slr = new CookieLocaleResolver();
-		slr.setDefaultLocale(Locale.US);
-		return slr;
+		CookieLocaleResolver clr = new CookieLocaleResolver();
+		clr.setDefaultLocale(Locale.US);
+		return clr;
 	}
 
 	/**
-	 * i18n bean support for switching locales through a request param
+	 * i18n bean support for switching locale through a request param. <br />
+	 * Users who are authenticated can change their default locale to another
+	 * when they pass in a<br />
+	 * url (http://example.com/&lt;contextpath&gt;/<em>lang=&lt;locale&gt;</em>)
 	 * 
 	 * @return
 	 */
@@ -124,7 +162,8 @@ public class Application extends WebMvcConfigurerAdapter {
 	}
 
 	/**
-	 * This bean was added to support JSR310 serialization to JSON
+	 * This bean was added to support JSR310 serialization to JSON. Java8time
+	 * support for Jackson
 	 * 
 	 * @param builder
 	 * @return
@@ -133,6 +172,8 @@ public class Application extends WebMvcConfigurerAdapter {
 	@Primary
 	public ObjectMapper objectMapper(Jackson2ObjectMapperBuilder builder) {
 		ObjectMapper objectMapper = builder.createXmlMapper(false).build();
+		// serialize datetime of Java8time to readable format and easily parsed
+		// by front end resources
 		objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 		// objectMapper.configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS,
 		// false);
@@ -140,7 +181,7 @@ public class Application extends WebMvcConfigurerAdapter {
 	}
 
 	/**
-	 * SQL database migration
+	 * SQL database migration. Liquibase keeps track of database changes
 	 * 
 	 * @param dataSource
 	 * @return
@@ -153,6 +194,7 @@ public class Application extends WebMvcConfigurerAdapter {
 		liquibase.setContexts(liquibaseProperties.getContexts());
 		liquibase.setDefaultSchema(liquibaseProperties.getDefaultSchema());
 		liquibase.setDropFirst(liquibaseProperties.isDropFirst());
+		// When the mongo profile is active, the migration is not required
 		if (env.acceptsProfiles(Profiles.MONGO))
 			liquibase.setShouldRun(false);
 		else {
@@ -169,6 +211,7 @@ public class Application extends WebMvcConfigurerAdapter {
 	 * @return Mongobee
 	 */
 	@Bean
+	// activate this bean only if the active profiles have 'Mongo'
 	@ConditionalOnExpression("#{environment.acceptsProfiles('" + Profiles.MONGO + "')}")
 	public Mongobee mongobee() {
 		log.trace("Configuring Mongobee...");
@@ -176,7 +219,7 @@ public class Application extends WebMvcConfigurerAdapter {
 		mongobee.setDbName(mongoProperties.getDatabase());
 		// package to scan for migrations
 		mongobee.setChangeLogsScanPackage("com.jipasoft.config.dbmigrations");
-		// set environment to process @Profile on
+		// set spring environment to process @Profile on
 		// 'com.jipasoft.config.dbmigrations.InitialSetupMigration'
 		mongobee.setSpringEnvironment(env);
 		mongobee.setEnabled(true);

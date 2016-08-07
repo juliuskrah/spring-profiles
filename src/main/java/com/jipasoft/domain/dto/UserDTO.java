@@ -31,6 +31,12 @@ import com.jipasoft.domain.User;
 
 import lombok.Data;
 
+/**
+ * Data Transfer Object for User. It is bound to the UI for validation
+ * 
+ * @author Julius Krah
+ *
+ */
 @Data
 public class UserDTO {
 	private String id;

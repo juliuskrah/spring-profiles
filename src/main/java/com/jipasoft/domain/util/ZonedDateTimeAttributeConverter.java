@@ -22,14 +22,27 @@ import java.time.ZonedDateTime;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
+/**
+ * Attribute converters for JPA implementations to register for Java8Time to SQL
+ * conversions
+ * 
+ * @author Julius Krah
+ *
+ */
 @Converter(autoApply = true)
 public class ZonedDateTimeAttributeConverter implements AttributeConverter<ZonedDateTime, Timestamp> {
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Timestamp convertToDatabaseColumn(ZonedDateTime attribute) {
 		return attribute == null ? null : Timestamp.from(attribute.toInstant());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public ZonedDateTime convertToEntityAttribute(Timestamp dbData) {
 		return dbData == null ? null : dbData.toLocalDateTime().atZone(ZoneId.systemDefault());

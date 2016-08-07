@@ -20,6 +20,12 @@ import org.springframework.context.annotation.Profile;
 
 import com.jipasoft.util.Profiles;
 
+/**
+ * Configuration to make application deployable to Heroku Cloud
+ * 
+ * @author Julius Krah
+ *
+ */
 @Profile(Profiles.HEROKU)
 @Configuration
 public class HerokuConfig {

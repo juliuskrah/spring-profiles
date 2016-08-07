@@ -43,12 +43,34 @@ import lombok.extern.slf4j.Slf4j;
 @Profile(Profiles.MYSQL)
 @ComponentScan(basePackageClasses = BaseRepositoryImpl.class)
 public class MySQLConfig {
+	/**
+	 * Create a session factory bean to be injected for ths profile. The MySQL
+	 * profile uses Hibernate natively.
+	 * 
+	 * @return
+	 */
 	@Bean
 	public HibernateJpaSessionFactoryBean sessionFactory() {
 		log.debug("Starting SessionFactory bean");
 		return new HibernateJpaSessionFactoryBean();
 	}
 
+	/**
+	 * Register filters akin to: <code>
+	 * <pre>
+	 * &lt;filter&gt;
+	 *   &lt;filter-name&gt;openSessionInView&lt;/filter-name&gt;
+	 *   &lt;filter-class&gt;org.springframework.orm.hibernate5.support.OpenSessionInView&lt;/filter-class&gt;
+	 * &lt;/filter&gt;
+	 * &lt;filter-mapping&gt;
+	 *   &lt;filter-name&gt;openSessionInView&lt;/filter-name&gt;
+	 *   &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+	 * &lt;/filter-mapping&gt;
+	 * </pre>
+	 * </code>
+	 * 
+	 * @return {@code FilterRegistrationBean} the registered filters
+	 */
 	@Bean
 	public FilterRegistrationBean filterRegistration() {
 		FilterRegistrationBean registration = new FilterRegistrationBean();
@@ -58,6 +80,11 @@ public class MySQLConfig {
 		return registration;
 	}
 
+	/**
+	 * Create a filter as a bean in Spring Boot
+	 * 
+	 * @return
+	 */
 	@Bean
 	public Filter openSessionInView() {
 		return new OpenSessionInViewFilter();

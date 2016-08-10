@@ -66,18 +66,15 @@
 						<li><a href="/logout" th:href="@{/logout}"
 							th:text="#{home.logout}">Sign out</a></li>
 						<li><a sec:authentication="name">Bob</a></li>
-						<div class="dropdown">
-							<button class="btn btn-default dropdown-toggle" type="button"
-								id="menu1" data-toggle="dropdown">
-								Language<span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown" role="button" aria-haspopup="true"
+							aria-expanded="false">Language <span class="caret"></span></a>
+							<ul class="dropdown-menu">
 								<li role="presentation"><a role="menuitem" tabindex="-1"
 									href="?lang=en" th:text="#{lang.en}">en</a></li>
 								<li role="presentation"><a role="menuitem" tabindex="-1"
 									href="?lang=fr" th:text="#{lang.fr}">fr</a></li>
-							</ul>
-						</div>
+							</ul></li>
 					</th:block>
 				</ul>
 			</div>

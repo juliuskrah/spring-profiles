@@ -104,67 +104,41 @@
 			});
 		});
 
-		$
-				.ajax({
+		$.ajax({
 					url : "user/find_all",
 					success : function(response) {
 						$("#delete").hide();
 						$("tr:has(td)").remove();
 
-						$
-								.each(
-										response,
+						$.each(response,
 										function(i, item) {
-											$('<tr>')
-													.append(
-															$('<td>')
-																	.append(
-																			$(
-																					'<a>')
-																					.attr(
+											   $('<tr>').append(
+												     $('<td>').append(
+																			$('<a>').attr(
 																							{
-																								href : '#',
-																								onclick : "update('user/update/"
-																										+ item.id
-																										+ "')",
-																								'data-toggle' : 'modal',
-																								'data-target' : '#myModal'
-																							})
-																					.text(
-																							item.login)),
-															$('<td>')
-																	.text(
-																			item.firstName),
-															$('<td>')
-																	.text(
-																			item.lastName),
-															$('<td>').text(
-																	item.email),
-															$('<td>')
-																	.text(
-																			item.activated),
-															$('<td>')
-																	.text(
-																			item.createdBy),
-															$('<td>')
-																	.text(
-																			item.createdDate),
-															$('<td>')
-																	.append(
-																			$(
-																					'<button>')
-																					.attr(
+																								     href : '#',
+																								     onclick : "update('user/update/" + item.id + "')",
+																								    'data-toggle' : 'modal',
+																								    'data-target' : '#myModal'
+																							}
+																			).text(item.login)),
+															$('<td>').text(item.firstName),
+															$('<td>').text(item.lastName),
+															$('<td>').text(item.email),
+															$('<td>').text(item.activated),
+															$('<td>').text(item.createdBy),
+															$('<td>').text(item.createdDate),
+															$('<td>').append(
+																			$('<button>').attr(
 																							{
-																								onclick : "deleteUser('user/delete/"
-																										+ item.id
-																										+ "', this)"
-																							})
-																					.addClass(
-																							'btn btn-danger glyphicon glyphicon-remove')))
+																							      onclick : "deleteUser('user/delete/" + item.id + "', this)"
+																							}).addClass('btn btn-danger glyphicon glyphicon-remove')
+																			)
+															)
 													.appendTo('tbody');
-										});
+							});
 					}
-				});
+		});
 
 		/* Fill in modal with content loaded via Ajax */
 		function update(url) {

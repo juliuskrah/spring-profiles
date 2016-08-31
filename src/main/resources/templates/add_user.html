@@ -35,7 +35,7 @@
 <body>
 	<div th:include="fragments/header :: header">&nbsp;</div>
 	<form class="form-narrow form-horizontal" method="post"
-		th:method="${userDTO.id} != null ? patch : post"
+		th:method="${userDTO.id  != 'add'} ? patch : post"
 		th:action="@{/user/add}" th:object="${userDTO}"
 		th:fragment="signupForm">
 		<!--/* Show general error task when form contains errors */-->
@@ -118,8 +118,7 @@
 			</div>
 			<div class="form-group">
 				<div class="col-lg-offset-2 col-lg-10">
-					<button type="submit" class="btn btn-default" th:inline="text">[[${userDTO.id}
-						!= null ? #{user.update} : #{user.add}]]</button>
+					<button type="submit" class="btn btn-default" th:inline="text">[[${userDTO.id  != 'add'} ? #{user.update} : #{user.add}]]</button>
 				</div>
 			</div>
 		</fieldset>

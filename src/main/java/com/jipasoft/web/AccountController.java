@@ -62,7 +62,11 @@ public class AccountController {
 
 	@GetMapping(path = { "add", "signup" })
 	public String add(Model model, @RequestHeader(value = "X-Requested-With", required = false) String requestedWith) {
-		model.addAttribute(new UserDTO());
+		model.addAttribute(new UserDTO(){
+			{
+				setId("add");
+			}
+		});
 		if (AjaxUtils.isAjaxRequest(requestedWith)) {
 			return ADD_USER_VIEW_NAME.concat(" :: signupForm");
 		}

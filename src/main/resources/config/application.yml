@@ -9,6 +9,8 @@ spring:
   jackson:
     serialization:
       indent-output: true
+      write-dates-as-timestamps: false
+      # write-date-timestamps-as-nanoseconds: false
   datasource:
     hikari:
       maximum-pool-size: 5

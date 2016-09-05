@@ -25,8 +25,6 @@ import java.util.stream.Stream;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,10 +34,12 @@ import com.jipasoft.domain.Authority;
 import com.jipasoft.domain.User;
 import com.jipasoft.util.Profiles;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @ActiveProfiles(Profiles.H2)
 @Transactional
 public class UserRepositoryTests extends ApplicationTests {
-	private static final Logger log = LoggerFactory.getLogger(UserRepositoryTests.class);
 	@Autowired
 	private UserRepository userRepository;
 
@@ -123,6 +123,7 @@ public class UserRepositoryTests extends ApplicationTests {
 		assertNotNull(user);
 
 		User userById = userRepository.findOneById(user.getId()).get();
+
 		assertNotNull(userById);
 		assertThat(user.getId()).isEqualTo(userById.getId());
 	}

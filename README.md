@@ -6,7 +6,8 @@
 This section contains the pre-requisite to run the application, how to run the application and how to use some of the application features.
 
 ### Deploy on Heroku
-To deploy Spring Profiles on Heroku, click the button below:  
+To deploy Spring Profiles on Heroku, click the button below:
+
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 ### Pre-requisite

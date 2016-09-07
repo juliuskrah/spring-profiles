@@ -31,7 +31,7 @@ import com.jipasoft.util.Profiles;
  *
  */
 @Configuration
-@Profile(Profiles.H2)
+@Profile({ Profiles.H2, Profiles.HEROKU })
 @EnableJpaRepositories(basePackageClasses = BaseRepositoryImpl.class)
 public class H2Config {
 

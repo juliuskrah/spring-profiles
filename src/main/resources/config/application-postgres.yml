@@ -22,7 +22,7 @@ spring:
         enabled: true
   datasource:
     hikari:
-      jdbc-url: jdbc:postgresql://localhost:5432/buy
+      jdbc-url: jdbc:postgresql://localhost:5432/profiles
       driver-class-name: org.postgresql.Driver
       maximum-pool-size: 10
       connection-timeout: 300

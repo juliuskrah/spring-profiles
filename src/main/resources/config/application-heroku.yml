@@ -16,55 +16,13 @@
 
 
 spring:
-  main:
-    banner-mode: 'off'
-  application:
-    name: spring-profiles
-  thymeleaf:
-    mode: XHTML
-    cache: false
-  jackson:
-    serialization:
-      indent-output: true
-      write-dates-as-timestamps: false
-      # write-date-timestamps-as-nanoseconds: false
   datasource:
     hikari:
-      maximum-pool-size: 5
+      jdbc-url: ${JDBC_DATABASE_URL}
+      # set JDBC_DATABASE_URL=jdbc:postgresql://localhost:5432/profiles?user=postgres^&password=root^&ssl=false
+      driver-class-name: org.postgresql.Driver
+      maximum-pool-size: 10
       initialization-fail-fast: true
-      connection-timeout: 250
+      minimum-idle: 2
   jpa:
-    hibernate:
-      naming:
-        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
-      use-new-id-generator-mappings: true
-      ddl-auto: none
-  messages:
-    basename: i18n/messages
-    fallback-to-system-locale: true
-  h2:
-    console:
-      enabled: false
-  mail:
-    default-encoding: UTF-8
-    host: smtp.mail.yahoo.com
-    password: null
-    port: 587
-    protocol: smtp
-    username: null
-    properties:
-      mail.smtp.auth: true
-  mvc:
-    locale: en_US
-security:
-  basic:
-    enabled: false
-  user:
-    name: julius
-    password: password
-logging:
-  level:
-    root: error
-    com.jipasoft: debug
-    com.github.mongobee: info
-    com.zaxxer.hikari: warn
+    database: postgresql

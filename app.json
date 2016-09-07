@@ -1,0 +1,13 @@
+{
+  "name": "Spring Profiles",
+  "description": "This app demonstrate how to use multiple profiles in a Spring application.",
+  "repository": "https://bitbucket.org/juliuskrah/spring-profiles",
+  "buildpacks": [
+    {
+      "url": "heroku/java"
+    }
+  ],
+  "scripts": {
+    "postdeploy": "java -jar target/*.war --spring.profiles.active=heroku --server.port=$PORT"
+  },
+}

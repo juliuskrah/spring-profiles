@@ -16,3 +16,5 @@ buildNumber.properties
 .project
 .settings
 /.apt_generated/
+.env 
+Procfile.windows 

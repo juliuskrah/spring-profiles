@@ -46,7 +46,7 @@ public class UserRepositoryImpl extends BaseRepositoryImpl<User, String> impleme
 	public Optional<User> findOneByResetKey(String resetKey) {
 		Query query = this.em.createQuery("SELECT u FROM User u WHERE u.resetKey LIKE :resetKey");
 		query.setParameter("resetKey", resetKey);
-		return Optional.of((User) query.getSingleResult());
+		return Optional.ofNullable((User) query.getSingleResult());
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class UserRepositoryImpl extends BaseRepositoryImpl<User, String> impleme
 	public Optional<User> findOneByEmail(String email) {
 		Query query = this.em.createQuery("SELECT u FROM User u WHERE u.email LIKE :email");
 		query.setParameter("email", email);
-		return Optional.of((User) query.getSingleResult());
+		return Optional.ofNullable((User) query.getSingleResult());
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class UserRepositoryImpl extends BaseRepositoryImpl<User, String> impleme
 	public Optional<User> findOneByLogin(String login) {
 		Query query = this.em.createQuery("SELECT u FROM User u WHERE u.login LIKE :login");
 		query.setParameter("login", login);
-		return Optional.of((User) query.getSingleResult());
+		return Optional.ofNullable((User) query.getSingleResult());
 	}
 
 }

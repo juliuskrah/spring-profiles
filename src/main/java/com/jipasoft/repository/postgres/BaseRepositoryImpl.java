@@ -74,7 +74,7 @@ public class BaseRepositoryImpl<T, ID extends Serializable> implements BaseRepos
 
 	@Override
 	public Optional<T> findOneById(ID id) {
-		return Optional.of(this.em.find(persistentClass, id));
+		return Optional.ofNullable(this.em.find(persistentClass, id));
 	}
 
 	@SuppressWarnings("unchecked")

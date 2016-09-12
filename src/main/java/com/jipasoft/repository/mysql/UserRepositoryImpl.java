@@ -48,7 +48,7 @@ public class UserRepositoryImpl extends BaseRepositoryImpl<User, String> impleme
 		Session session = this.sessionFactory.get().getCurrentSession();
 		Criteria criteria = session.createCriteria(User.class);
 		criteria.add(Restrictions.like("resetKey", resetKey));
-		return Optional.of((User) criteria.uniqueResult());
+		return Optional.ofNullable((User) criteria.uniqueResult());
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class UserRepositoryImpl extends BaseRepositoryImpl<User, String> impleme
 		Session session = this.sessionFactory.get().getCurrentSession();
 		Criteria criteria = session.createCriteria(User.class);
 		criteria.add(Restrictions.like("email", email));
-		return Optional.of((User) criteria.uniqueResult());
+		return Optional.ofNullable((User) criteria.uniqueResult());
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class UserRepositoryImpl extends BaseRepositoryImpl<User, String> impleme
 		Session session = this.sessionFactory.get().getCurrentSession();
 		Criteria criteria = session.createCriteria(User.class);
 		criteria.add(Restrictions.like("login", login));
-		return Optional.of((User) criteria.uniqueResult());
+		return Optional.ofNullable((User) criteria.uniqueResult());
 	}
 
 }

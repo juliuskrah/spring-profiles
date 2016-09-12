@@ -105,7 +105,7 @@ public class BaseRepositoryImpl<T, ID extends Serializable> implements BaseRepos
 	public Optional<T> findOneById(ID id) {
 		Session session = this.sessionFactory.get().getCurrentSession();
 
-		return Optional.of((T) session.get(persistentClass, id));
+		return Optional.ofNullable((T) session.get(persistentClass, id));
 	}
 
 }

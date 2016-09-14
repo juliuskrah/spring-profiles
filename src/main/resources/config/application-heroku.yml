@@ -26,3 +26,5 @@ spring:
       minimum-idle: 2
   jpa:
     database: postgresql
+  thymeleaf:
+    cache: true

@@ -15,7 +15,6 @@ Not much is needed to run this application. You only need two things:
 
 *Required*
 
-* [Maven][] 3.3+
 * [Git][]
 * [JDK][] 8+
 
@@ -24,6 +23,7 @@ Not much is needed to run this application. You only need two things:
 * [MySQL][]
 * [PostgreSQL][]
 * [MongoDB][]
+* [Maven][] 3.3+
 
 ### Getting the Project
 Get the project from the source repository
@@ -46,7 +46,187 @@ Use the link above to access the application. The application is secured with [S
 It's that easy.
 
 ### Application Features
--- application features go here
+This section lists all the features of this application
+
+#### Internationalization
+
+file: `src/main/java/com/jipasoft/config/Application.java`
+```java
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+
+ public class Application extends WebMvcConfigurerAdapter {
+ 	...
+ 	
+ 	@Bean
+	public LocaleResolver localeResolver() {
+		CookieLocaleResolver clr = new CookieLocaleResolver();
+		clr.setDefaultLocale(Locale.US);
+		return clr;
+	}
+ 	
+ 	@Bean
+	public LocaleChangeInterceptor localeChangeInterceptor() {
+		LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
+		lci.setParamName("lang"); // The language will change with this request parameter
+		return lci;
+	}
+	
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(localeChangeInterceptor());
+	}
+}
+```
+
+You tell Spring where to find the message sources for i18n  
+file: `src/main/resources/config/application.yml`
+```yaml
+spring:
+  messages:
+    basename: i18n/messages
+```
+
+You define the messages with their keys and values  
+file: `src/main/resources/i18n/messages.properties`
+```shell
+...
+user.add=Add user
+user.update=Update user
+user.login=Login
+user.firstname=First name
+```
+
+This is used in Thymeleaf 3 leveraging it's i18n support  
+file: `src/main/resources/templates/fragments/header.html`
+```html
+<!DOCTYPE html>
+<html>
+	<ul>
+		<th:block sec:authorize="isAuthenticated()">
+			<li><a href="/logout" th:href="@{/logout}"
+				th:text="#{home.logout}">Sign out</a></li>
+			<li><a sec:authentication="name">Bob</a></li>
+			<li class="dropdown"><a href="#" class="dropdown-toggle"
+				data-toggle="dropdown" role="button" aria-haspopup="true"
+				aria-expanded="false">[[#{lang.name}]] <span class="caret"></span></a>
+				<ul class="dropdown-menu">
+					<li role="presentation"><a role="menuitem" tabindex="-1"
+						href="?lang=en" th:text="#{lang.en}">en</a></li>
+					<li role="presentation"><a role="menuitem" tabindex="-1"
+						href="?lang=fr" th:text="#{lang.fr}">fr</a></li>
+				</ul>
+			</li>
+		</th:block>
+	</ul>
+</html>
+```
+
+*English*  
+![Homepage English](./images/profiles-en.PNG)
+
+*French*  
+![Homepage French](./images/profiles-fr.PNG)
+
+
+#### Error Handling
+This project leverages `Spring-Boot`'s error handler using convention over configuration  
+`src\main\resources\templates\error\404.html`
+
+#### Bean Validation
+This application uses `JSR 303`.  
+file: `src/main/java/com/jipasoft/domain/dto/UserDTO.java`
+```java
+import java.time.ZonedDateTime;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
+
+public class UserDTO {
+	private String id;
+
+	@NotNull
+	@Pattern(regexp = "^[a-z0-9]*$|(anonymousUser)")
+	@Size(min = 1, max = 100)
+	private String login;
+
+	@NotNull
+	@Size(min = 1, max = 60)
+	private String password;
+
+	@NotNull
+	@Size(min = 1, max = 50)
+	private String firstName;
+
+	@NotNull
+	@Size(min = 1, max = 50)
+	private String lastName;
+
+	@Email
+	@NotNull
+	@Size(min = 1, max = 100)
+	private String email;
+
+	@NotNull
+	private boolean activated = false;
+
+	@NotNull
+	private String createdBy = "system";
+
+	@NotNull
+	private ZonedDateTime createdDate = ZonedDateTime.now();
+
+	// Standard getters and setters
+}
+
+```
+
+file: `src/main/java/com/jipasoft/web/AccountController.java`
+```java
+import javax.validation.Valid;
+
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.jipasoft.domain.dto.UserDTO;
+
+public class AccountController {
+	private static String ADD_USER_VIEW_NAME = "add_user";
+	
+	...
+	 
+	@PostMapping("add")
+	public String add(@Valid @ModelAttribute UserDTO userDTO, Errors errors, RedirectAttributes ra) {
+		if (errors.hasErrors()) {
+			return ADD_USER_VIEW_NAME;
+		}
+		...
+
+		return "redirect:/";
+	}
+}
+```
+
+User validation  
+![User Validation](./images/user-validation.PNG)
+
+
+#### Database Migration
+
+#### Runs on Multiple Database Platforms
+
+#### Ajax
+
+#### Send Mail on Error / Exception
 
 ## Technology Stack
 * [Spring-Boot][]

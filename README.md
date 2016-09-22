@@ -59,7 +59,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
- public class Application extends WebMvcConfigurerAdapter {
+public class Application extends WebMvcConfigurerAdapter {
  	...
  	
  	@Bean
@@ -106,31 +106,35 @@ file: `src/main/resources/templates/fragments/header.html`
 ```html
 <!DOCTYPE html>
 <html>
-	<ul>
-		<th:block sec:authorize="isAuthenticated()">
-			<li><a href="/logout" th:href="@{/logout}"
-				th:text="#{home.logout}">Sign out</a></li>
-			<li><a sec:authentication="name">Bob</a></li>
-			<li class="dropdown"><a href="#" class="dropdown-toggle"
-				data-toggle="dropdown" role="button" aria-haspopup="true"
-				aria-expanded="false">[[#{lang.name}]] <span class="caret"></span></a>
-				<ul class="dropdown-menu">
-					<li role="presentation"><a role="menuitem" tabindex="-1"
-						href="?lang=en" th:text="#{lang.en}">en</a></li>
-					<li role="presentation"><a role="menuitem" tabindex="-1"
-						href="?lang=fr" th:text="#{lang.fr}">fr</a></li>
-				</ul>
-			</li>
-		</th:block>
-	</ul>
+	<head>...</head>
+	<body>
+	...
+		<ul>
+			<th:block sec:authorize="isAuthenticated()">
+				<li><a href="/logout" th:href="@{/logout}"
+					th:text="#{home.logout}">Sign out</a></li>
+				<li><a sec:authentication="name">Bob</a></li>
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown" role="button" aria-haspopup="true"
+					aria-expanded="false">[[#{lang.name}]] <span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li role="presentation"><a role="menuitem" tabindex="-1"
+							href="?lang=en" th:text="#{lang.en}">en</a></li>
+						<li role="presentation"><a role="menuitem" tabindex="-1"
+							href="?lang=fr" th:text="#{lang.fr}">fr</a></li>
+					</ul>
+				</li>
+			</th:block>
+		</ul>
+	</body>
 </html>
 ```
 
 *English*  
-![Homepage English](./images/profiles-en.PNG)
+![Homepage English](https://github.com/juliuskrah/spring-profiles/blob/master/images/profiles-en.PNG)
 
 *French*  
-![Homepage French](./images/profiles-fr.PNG)
+![Homepage French](https://github.com/juliuskrah/spring-profiles/blob/master/images/profiles-fr.PNG)
 
 
 #### Error Handling
@@ -217,7 +221,7 @@ public class AccountController {
 ```
 
 User validation  
-![User Validation](./images/user-validation.PNG)
+![User Validation](https://github.com/juliuskrah/spring-profiles/blob/master/images/user-validation.PNG)
 
 
 #### Database Migration

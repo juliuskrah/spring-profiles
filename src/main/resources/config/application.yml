@@ -64,7 +64,7 @@ security:
     password: password
 logging:
   level:
-    root: error
+    root: info
     com.jipasoft: debug
     com.github.mongobee: info
     com.zaxxer.hikari: warn

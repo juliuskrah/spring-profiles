@@ -372,10 +372,24 @@ public class UserRepositoryImpl extends BaseRepositoryImpl<User, Integer> implem
 
 ```
 
-This bean, if loaded together with the above bean of same type and name will cause a conflict. Thus this bean definition will only get loaded if the `postgres` profile is active.
+This bean, if loaded together with the above bean of same type and name, it will cause a conflict. Thus this bean definition will only get loaded if the `postgres` profile is active.
 
 ## [H2][]
 The H2 profile is the default profile for this application if no active profile is selected. This profile uses [Spring Data JPA][] as an abstraction of the [Hibernate][] JPA implementation.
+
+## [MongoDB][]
+
+## [MySQL][]
+
+## [PostgreSQL][]
+
+## Heroku
+
+## Aspect
+Asynchronous mail sender on application exceptions when the `Aspect` profile is enabled.
+To get started with the aspect profile, set the `spring.mail.username` and `spring.mail.password` 
+properties in the `application-aspect.yml` file. If your smtp server is not gmail,
+set and configure your `spring.mail.host` and `spring.mail.port` accordingly.
 
 
 [comment]: # (The implicit link name shortcut allows you to omit the name of the link, in which case the link text itself is used as the name)
@@ -406,7 +420,7 @@ The H2 profile is the default profile for this application if no active profile 
 [H2]: http://www.h2database.com/html/quickstart.html "H2 database"
 [MySQL]: http://dev.mysql.com/doc/ "MySQL database"
 [PostgreSQL]: https://www.postgresql.org/docs/ "PostgreSQL database"
-[MongoDb]: https://docs.mongodb.com/?_ga=1.1231921.1865610331.1455481105
+[MongoDB]: https://docs.mongodb.com/?_ga=1.1231921.1865610331.1455481105
 [Spring]: http://docs.spring.io/spring/docs/current/spring-framework-reference/htmlsingle/ "Spring Framework"
 [Profiles]: http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-profiles.html
 [Configuration]: http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/context/annotation/Configuration.html

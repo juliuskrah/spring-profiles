@@ -21,7 +21,7 @@ spring:
   application:
     name: spring-profiles
   thymeleaf:
-    mode: XHTML
+    mode: HTML
     cache: false
   jackson:
     serialization:

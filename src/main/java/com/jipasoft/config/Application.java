@@ -26,12 +26,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
+import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.boot.autoconfigure.mongo.MongoProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -44,7 +44,6 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 import com.github.mongobee.Mongobee;
-import com.jipasoft.aop.exceptions.ExceptionAspect;
 import com.jipasoft.domain.AbstractAuditEntity;
 import com.jipasoft.service.Services;
 import com.jipasoft.util.Profiles;
@@ -82,11 +81,11 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Slf4j
-@EnableAspectJAutoProxy
-@SpringBootApplication(scanBasePackageClasses = { Controllers.class, Services.class, ExceptionAspect.class })
-@EnableConfigurationProperties({ LiquibaseProperties.class })
+@SpringBootApplication(scanBasePackageClasses = { Controllers.class, Services.class})
+@EnableConfigurationProperties({ LiquibaseProperties.class, MailProperties.class })
 @EntityScan(basePackageClasses = AbstractAuditEntity.class)
-@Import(value = { H2Config.class, PostgresConfig.class, MySQLConfig.class, MongoConfig.class, SecurityConfig.class })
+@Import(value = { H2Config.class, PostgresConfig.class, MySQLConfig.class, 
+		MongoConfig.class, AspectConfig.class, SecurityConfig.class })
 public class Application extends WebMvcConfigurerAdapter {
 	@Inject
 	private LiquibaseProperties liquibaseProperties;

@@ -386,9 +386,9 @@ The H2 profile is the default profile for this application if no active profile 
 ## Heroku
 
 ## Aspect
-Asynchronous mail sender on application exceptions when the `Aspect` profile is enabled.
+Asynchronous mail sender on application exceptions when the `aspect` profile is enabled.
 To get started with the aspect profile, set the `spring.mail.username` and `spring.mail.password` 
-properties in the `application-aspect.yml` file. If your smtp server is not gmail,
+properties in the `application-aspect.yml` file. If your mail server is not Gmail,
 set and configure your `spring.mail.host` and `spring.mail.port` accordingly.
 
 

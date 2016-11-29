@@ -22,6 +22,7 @@ import javax.inject.Inject;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -38,6 +39,8 @@ import lombok.extern.slf4j.Slf4j;
 public class ExceptionInterceptor implements MethodInterceptor {
 	@Inject
 	private MailSender mailSender;
+	@Value("${spring.user.email}")
+	private String[] to;
 
 	@Override
 	public Object invoke(MethodInvocation method) throws Throwable {
@@ -51,8 +54,8 @@ public class ExceptionInterceptor implements MethodInterceptor {
 			e.printStackTrace(new PrintWriter(stackTrace));
 			// Building e-mail
 			SimpleMailMessage email = new SimpleMailMessage();
-			email.setTo("juliuskrah@hotmail.com");
-			email.setSubject("[MyApp] Exception in '" + method.getMethod().getName() + "' method");
+			email.setTo(to);
+			email.setSubject("[Spring Profiles] Exception in '" + method.getMethod().getName() + "' method");
 			email.setText(
 				"Exception in: " + method.getMethod().getName() + "\n\n" +
 				"Class: " + method.getMethod().getDeclaringClass().getName() + "\n\n" +

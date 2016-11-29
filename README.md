@@ -51,6 +51,7 @@ This section lists all the features of this application
 #### Internationalization
 
 file: `src/main/java/com/jipasoft/config/Application.java`
+
 ```java
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.LocaleResolver;
@@ -85,6 +86,7 @@ public class Application extends WebMvcConfigurerAdapter {
 
 You tell Spring where to find the message sources for i18n  
 file: `src/main/resources/config/application.yml`
+
 ```yaml
 spring:
   messages:
@@ -93,7 +95,8 @@ spring:
 
 You define the messages with their keys and values  
 file: `src/main/resources/i18n/messages.properties`
-```shell
+
+```properties
 ...
 user.add=Add user
 user.update=Update user
@@ -103,6 +106,7 @@ user.firstname=First name
 
 This is used in Thymeleaf 3 leveraging it's i18n support  
 file: `src/main/resources/templates/fragments/header.html`
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -144,6 +148,7 @@ This project leverages `Spring-Boot`'s error handler using convention over confi
 #### Bean Validation
 This application uses `JSR 303`.  
 file: `src/main/java/com/jipasoft/domain/dto/UserDTO.java`
+
 ```java
 import java.time.ZonedDateTime;
 
@@ -193,6 +198,7 @@ public class UserDTO {
 ```
 
 file: `src/main/java/com/jipasoft/web/AccountController.java`
+
 ```java
 import javax.validation.Valid;
 
@@ -230,8 +236,6 @@ User validation
 
 #### Ajax
 
-#### Send Mail on Error / Exception
-
 ## Technology Stack
 * [Spring-Boot][]
 * [Hibernate][]
@@ -249,6 +253,8 @@ User validation
 
 ## Introduction
 [Spring][] [Profiles][] provide a way to segregate parts of your application configuration and make it only available in certain environments. Any [`@Component`][Component] or [`@Configuration`][Configuration] can be marked with [`@Profile`][Profile] to limit when it is loaded:
+
+file: `src/main/java/com/jipasoft/config/H2Config.java`
 
 ```java
 import org.springframework.context.annotation.Configuration;
@@ -274,9 +280,9 @@ The focus of this project is to demonstrate how to build a Spring application th
 
 All profiles implement the interfaces in `com.jipasoft.repository` package using different strategies. Another use for the profiles is to prevent conflicting [bean][] definitions. With the profiles configured properly, not all beans will be loaded together. e.g.
 
-```java
-package com.jipasoft.repository.mysql;
+file: `src/main/java/com/jipasoft/repository/mysql/UserRepositoryImpl.java`
 
+```java
 import java.util.Optional;
 
 import org.hibernate.Criteria;
@@ -327,9 +333,9 @@ The above bean of type `com.jipasoft.repository.UserRepository` gets loaded only
 
 The following bean is also of type `com.jipasoft.repository.UserRepository`.
 
-```java
-package com.jipasoft.repository.postgres;
+file: `src/main/java/com/jipasoft/repository/postgres/UserRepositoryImpl.java`
 
+```java
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
@@ -386,11 +392,118 @@ The H2 profile is the default profile for this application if no active profile 
 ## Heroku
 
 ## Aspect
-Asynchronous mail sender on application exceptions when the `aspect` profile is enabled.
-To get started with the aspect profile, set the `spring.mail.username` and `spring.mail.password` 
-properties in the `application-aspect.yml` file. If your mail server is not Gmail,
-set and configure your `spring.mail.host` and `spring.mail.port` accordingly.
+The application is configured to send email to an administrator with this key: `spring.user.email` when an exception occurs.
+In order to avoid overflow of email to the administrator, we will create an asynchronous mail sender implementation:
 
+file: `src/main/java/com/jipasoft/task/AsyncMailSender.java`
+
+```java
+import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.scheduling.annotation.Async;
+
+public class AsyncMailSender extends JavaMailSenderImpl {
+
+	@Async
+	@Override
+	public void send(SimpleMailMessage simpleMessage) throws MailException {
+		super.send(simpleMessage);
+	}
+
+	@Async
+	@Override
+	public void send(SimpleMailMessage... simpleMessages) throws MailException {
+		super.send(simpleMessages);
+	}
+}
+
+```
+
+Notice the `@Async` annotation on the `send()` methods. In order to activate them for spring, you would need to
+enable it with with `@EnableAsync` on a `@configuration` class:
+
+file: `src/main/java/com/jipasoft/config/AspectConfig.java`
+
+```java
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
+@EnableAsync
+@Configuration
+public class AspectConfig {
+	...
+	
+	@Bean
+	public ThreadPoolTaskExecutor taskExecutor() {
+		ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+		taskExecutor.setCorePoolSize(5);
+		taskExecutor.setMaxPoolSize(25);
+		taskExecutor.setQueueCapacity(100);
+
+		return taskExecutor;
+	}
+	
+	...
+}
+```
+From the above configuration you would notice the `taskExecutor` bean. For the `@EnableAsync` annotation to properly
+function, you need a taskExecutor bean for Asynchronous execution.
+
+To get started with the aspect profile, set the `spring.mail.username` and `spring.mail.password` 
+properties in the `application-aspect.yml` file. If your mail server is not Gmail, set and configure your 
+`spring.mail.host` and `spring.mail.port` accordingly. 
+
+A few more beans will need to be bootstrapped for this functionality to work.
+
+file: `src/main/java/com/jipasoft/config/AspectConfig.java`
+
+```java
+import org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
+import com.jipasoft.task.AsyncMailSender;
+import com.jipasoft.task.ExceptionInterceptor;
+
+@EnableAsync
+@Configuration
+public class AspectConfig {
+	...
+	
+	@Bean
+	public JavaMailSender mailSender() {
+		JavaMailSenderImpl sender = new AsyncMailSender();
+		...
+		return sender;
+	}
+
+	@Bean
+	public ExceptionInterceptor exceptionInterceptor() {
+		return new ExceptionInterceptor();
+	}
+
+	@Bean
+	public BeanNameAutoProxyCreator autoProxyCreater() {
+		BeanNameAutoProxyCreator autoProxyCreator = new BeanNameAutoProxyCreator();
+		autoProxyCreator.setBeanNames("*Controller");
+		autoProxyCreator.setInterceptorNames("exceptionInterceptor");
+
+		return autoProxyCreator;
+	}
+}
+```
+We have our `mailSender` bean that is an asynchronous implementation of `MailSender`. The next bean configured is the 
+`exceptionInterceptor` that intercepts calls on an interface on its way to the target. These are nested "on top" of the target.
+To put it all together, we have the `autoProxyCreater` bean of type `BeanNameAutoProxyCreator`. In this bean we are 
+telling Spring to scan all bean names ending in `*.Controller` and setting the interceptor as the `exceptionInterceptor`
+bean created earlier.
 
 [comment]: # (The implicit link name shortcut allows you to omit the name of the link, in which case the link text itself is used as the name)
 [comment]: # (Reference links are not case sensitive)

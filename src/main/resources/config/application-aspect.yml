@@ -25,3 +25,5 @@ spring:
     password: s3cr3t
     properties:
       mail.smtps.auth: true
+  user:
+    email: adminuser@example.com 

@@ -17,6 +17,7 @@ package com.jipasoft.task;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.time.ZonedDateTime;
 
 import javax.inject.Inject;
 
@@ -59,6 +60,7 @@ public class ExceptionInterceptor implements MethodInterceptor {
 			email.setText(
 				"Exception in: " + method.getMethod().getName() + "\n\n" +
 				"Class: " + method.getMethod().getDeclaringClass().getName() + "\n\n" +
+				"Time: " + ZonedDateTime.now() + "\n\n" +
 				"Message: " + e.getMessage() + "\n\n" +
 				"StackTrace:\n" + stackTrace.getBuffer().toString()
 			);

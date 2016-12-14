@@ -32,6 +32,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -46,6 +47,7 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import com.github.mongobee.Mongobee;
 import com.jipasoft.domain.AbstractAuditEntity;
 import com.jipasoft.service.Services;
+import com.jipasoft.task.ExceptionAspect;
 import com.jipasoft.util.Profiles;
 import com.jipasoft.web.Controllers;
 import com.mongodb.Mongo;
@@ -81,11 +83,11 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Slf4j
-@SpringBootApplication(scanBasePackageClasses = { Controllers.class, Services.class})
+@SpringBootApplication(scanBasePackageClasses = { Controllers.class, Services.class, ExceptionAspect.class })
 @EnableConfigurationProperties({ LiquibaseProperties.class, MailProperties.class })
+@EnableAspectJAutoProxy
 @EntityScan(basePackageClasses = AbstractAuditEntity.class)
-@Import(value = { H2Config.class, PostgresConfig.class, MySQLConfig.class, 
-		MongoConfig.class, AspectConfig.class, SecurityConfig.class })
+@Import(value = { H2Config.class, PostgresConfig.class, MySQLConfig.class, MongoConfig.class, AspectConfig.class, SecurityConfig.class })
 public class Application extends WebMvcConfigurerAdapter {
 	@Inject
 	private LiquibaseProperties liquibaseProperties;

@@ -23,6 +23,7 @@ import javax.inject.Inject;
 import org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator;
 import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -31,6 +32,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import com.jipasoft.task.AsyncMailSender;
+import com.jipasoft.task.ExceptionAspect;
 import com.jipasoft.task.ExceptionInterceptor;
 import com.jipasoft.util.Profiles;
 
@@ -51,6 +53,7 @@ import com.jipasoft.util.Profiles;
 @EnableAsync
 @Profile(Profiles.ASPECT)
 @Configuration
+@ComponentScan(basePackageClasses = ExceptionAspect.class)
 public class AspectConfig {
 	@Inject
 	private MailProperties mailProperties;

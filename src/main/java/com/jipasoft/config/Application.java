@@ -47,7 +47,6 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import com.github.mongobee.Mongobee;
 import com.jipasoft.domain.AbstractAuditEntity;
 import com.jipasoft.service.Services;
-import com.jipasoft.task.ExceptionAspect;
 import com.jipasoft.util.Profiles;
 import com.jipasoft.web.Controllers;
 import com.mongodb.Mongo;
@@ -83,7 +82,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Slf4j
-@SpringBootApplication(scanBasePackageClasses = { Controllers.class, Services.class, ExceptionAspect.class })
+@SpringBootApplication(scanBasePackageClasses = { Controllers.class, Services.class })
 @EnableConfigurationProperties({ LiquibaseProperties.class, MailProperties.class })
 @EnableAspectJAutoProxy
 @EntityScan(basePackageClasses = AbstractAuditEntity.class)

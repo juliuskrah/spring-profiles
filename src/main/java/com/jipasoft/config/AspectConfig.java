@@ -86,12 +86,22 @@ public class AspectConfig {
 		return sender;
 	}
 
-	@Bean
+	/**
+	 * Bean to intercept all application exceptions and queue them for asynchronous mail sending
+	 * 
+	 * @return ExceptionInterceptor
+	 */
+	// @Bean uncomment to enable
 	public ExceptionInterceptor exceptionInterceptor() {
 		return new ExceptionInterceptor();
 	}
 
-	@Bean
+	/**
+	 * Bean to create proxies for the interceptor. It scans the classpath for Controller classes
+	 * 
+	 * @return BeanNameAutoProxyCreator
+	 */
+	// @Bean uncomment to enable
 	public BeanNameAutoProxyCreator autoProxyCreater() {
 		BeanNameAutoProxyCreator autoProxyCreator = new BeanNameAutoProxyCreator();
 		autoProxyCreator.setBeanNames("*Controller");

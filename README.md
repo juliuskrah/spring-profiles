@@ -515,19 +515,20 @@ The H2 profile is the default profile for this application if no active profile 
 as an abstraction of the [Hibernate][] JPA implementation.
 
 ## [MongoDB][]
-This profile can be activated if you have MongoDB installed. To run with this profile:
+This profile can be activated if you have MongoDB installed. To run with this profile:  
 `mvnw spring-boot:run -Drun.arguments="--spring.profiles.active=mongo"`
 
 ## [MySQL][]
-This profile can be activated if you have MySQL installed. To run with this profile:
+This profile can be activated if you have MySQL installed. To run with this profile:  
 `mvnw spring-boot:run -Drun.arguments="--spring.profiles.active=mysql"`
 
 ## [PostgreSQL][]
-This profile can be activated if you have PostgreSQL installed. To run with this profile:
+This profile can be activated if you have PostgreSQL installed. To run with this profile:  
 `mvnw spring-boot:run -Drun.arguments="--spring.profiles.active=postgres"`
 
 ## Heroku
 This profile can be activated to deploy on Heroku. To enable the heroku profile:
+
 file: `Procfile`
 
 ```json
@@ -682,7 +683,7 @@ public class ExceptionAspect {
 		// Application Logic
 	}
 }
-````
+```
 
 Next we scan our `Aspect` class through `ComponentScan` in our configuration class.
 

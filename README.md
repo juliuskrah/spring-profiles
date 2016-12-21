@@ -30,8 +30,8 @@ Get the project from the source repository
 >`git clone https://juliuskrah@bitbucket.org/juliuskrah/spring-profiles.git`
 
 ### Running the Project
-To run the project, first navigate into the source directory `cd spring-profiles` and execute `mvn`.  
-When you execute the `mvn` command, two things are happening here.
+To run the project, first navigate into the source directory `cd spring-profiles` and execute `mvnw`.  
+When you execute the `mvnw` command, two things are happening here.
 
 * `spring-boot:run`: first it executes the Spring-Boot maven plugin
 * `--spring.profiles.active=h2`: second it starts the project with the `h2` profile active; Passing it as commandline arguments
@@ -110,27 +110,33 @@ file: `src/main/resources/templates/fragments/header.html`
 ```html
 <!DOCTYPE html>
 <html>
-	<head>...</head>
-	<body>
-	...
-		<ul>
-			<th:block sec:authorize="isAuthenticated()">
-				<li><a href="/logout" th:href="@{/logout}"
-					th:text="#{home.logout}">Sign out</a></li>
-				<li><a sec:authentication="name">Bob</a></li>
-				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown" role="button" aria-haspopup="true"
-					aria-expanded="false">[[#{lang.name}]] <span class="caret"></span></a>
-					<ul class="dropdown-menu">
-						<li role="presentation"><a role="menuitem" tabindex="-1"
-							href="?lang=en" th:text="#{lang.en}">en</a></li>
-						<li role="presentation"><a role="menuitem" tabindex="-1"
-							href="?lang=fr" th:text="#{lang.fr}">fr</a></li>
-					</ul>
-				</li>
-			</th:block>
-		</ul>
-	</body>
+  <head>...</head>
+  <body>
+  ...
+    <ul>
+      <th:block sec:authorize="isAuthenticated()">
+        <li>
+          <a href="/logout" th:href="@{/logout}" th:text="#{home.logout}">Sign out</a>
+        </li>
+        <li>
+          <a sec:authentication="name">Bob</a>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+            aria-expanded="false">[[#{lang.name}]] <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li role="presentation">
+              <a role="menuitem" tabindex="-1" href="?lang=en" th:text="#{lang.en}">en</a>
+            </li>
+            <li role="presentation">
+              <a role="menuitem" tabindex="-1" href="?lang=fr" th:text="#{lang.fr}">fr</a>
+            </li>
+          </ul>
+        </li>
+      </th:block>
+    </ul>
+  </body>
 </html>
 ```
 
@@ -231,10 +237,134 @@ User validation
 
 
 #### Database Migration
+The application makes use of database migration to track database changes. The migrations are split into two depending on which profile
+is active.
+
+1.   SQL Migration
+2.   NoSQL Migration
+
+##### SQL Migration
+The sql migration uses `Liquibase`.
+
+file: `src/main/java/com/jipasoft/config/Application.java`
+
+```java
+import javax.sql.DataSource;
+import javax.inject.Inject;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+
+import liquibase.integration.spring.SpringLiquibase;
+
+@SpringBootApplication
+@EnableConfigurationProperties(LiquibaseProperties.class)
+public class Application {
+	@Inject
+	private LiquibaseProperties liquibaseProperties;
+	...
+
+	@Bean
+	public SpringLiquibase liquibase(DataSource dataSource) {
+		SpringLiquibase liquibase = new SpringLiquibase();
+		liquibase.setDataSource(dataSource);
+		liquibase.setChangeLog(liquibaseProperties.getChangeLog());
+		liquibase.setContexts(liquibaseProperties.getContexts());
+		liquibase.setDefaultSchema(liquibaseProperties.getDefaultSchema());
+		liquibase.setDropFirst(liquibaseProperties.isDropFirst());
+		liquibase.setShouldRun(liquibaseProperties.isEnabled());
+
+		return liquibase;
+	}
+}
+```
+
+##### NoSQL Migration
+The nosql migration uses `MongoBee`.
+
+file: `src/main/java/com/jipasoft/config/Application.java`
+
+```java
+import javax.inject.Inject;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.mongo.MongoProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+
+import com.github.mongobee.Mongobee;
+
+@SpringBootApplication
+@EnableConfigurationProperties(LiquibaseProperties.class)
+public class Application {
+	@Inject
+	private MongoProperties mongoProperties;
+	...
+
+	@Bean
+	public Mongobee mongobee() {
+		Mongobee mongobee = new Mongobee(mongo);
+		mongobee.setDbName(mongoProperties.getDatabase());
+		mongobee.setChangeLogsScanPackage("com.jipasoft.config.dbmigrations");
+		mongobee.setEnabled(true);
+		return mongobee;
+	}
+}
+```
 
 #### Runs on Multiple Database Platforms
+The application can run on:
+
+1.   H2
+2.   PostgreSQL
+3.   MySQL
+4.   MongoDB
+
+Continue reading to see how it is achieved.
 
 #### Ajax
+In building a web application, you may not always want rebuild the `DOM` to display changes to your end user. Sometimes you just want
+to pool your backend for tiny data to update the `DOM`. In this sample, I will build a table row with ajax using [JQuery][].
+
+```javascript
+$.ajax({
+  url : "user/find_all",
+  success : function(response) {
+    $("#delete").hide();
+    $("tr:has(td)").remove();
+
+    $.each(response,
+      function(i, item) {
+        $('<tr>').append(
+          $('<td>').append(
+            $('<a>').attr(
+              {
+                href : '#',
+                onclick : "update('user/update/" + item.id + "')",
+                'data-toggle' : 'modal',
+                'data-target' : '#myModal'
+              }
+            ).text(item.login)),
+          $('<td>').text(item.firstName),
+          $('<td>').text(item.lastName),
+          $('<td>').text(item.email),
+          $('<td>').text(item.activated),
+          $('<td>').text(item.createdBy),
+          $('<td>').text(item.createdDate),
+          $('<td>').append(
+            $('<button>').attr(
+              {
+                onclick : "deleteUser('user/delete/" + item.id + "', this)"
+              }).addClass('btn btn-danger glyphicon glyphicon-remove')
+          )
+        )
+      .appendTo('tbody');
+    });
+  }
+});
+```
 
 ## Technology Stack
 * [Spring-Boot][]
@@ -381,18 +511,32 @@ public class UserRepositoryImpl extends BaseRepositoryImpl<User, Integer> implem
 This bean, if loaded together with the above bean of same type and name, it will cause a conflict. Thus this bean definition will only get loaded if the `postgres` profile is active.
 
 ## [H2][]
-The H2 profile is the default profile for this application if no active profile is selected. This profile uses [Spring Data JPA][] as an abstraction of the [Hibernate][] JPA implementation.
+The H2 profile is the default profile for this application if no active profile is selected. This profile uses [Spring Data JPA][] 
+as an abstraction of the [Hibernate][] JPA implementation.
 
 ## [MongoDB][]
+This profile can be activated if you have MongoDB installed. To run with this profile:
+`mvnw spring-boot:run -Drun.arguments="--spring.profiles.active=mongo"`
 
 ## [MySQL][]
+This profile can be activated if you have MySQL installed. To run with this profile:
+`mvnw spring-boot:run -Drun.arguments="--spring.profiles.active=mysql"`
 
 ## [PostgreSQL][]
+This profile can be activated if you have PostgreSQL installed. To run with this profile:
+`mvnw spring-boot:run -Drun.arguments="--spring.profiles.active=postgres"`
 
 ## Heroku
+This profile can be activated to deploy on Heroku. To enable the heroku profile:
+file: `Procfile`
+
+```json
+web: java -jar target/*.war --spring.profiles.active=heroku --server.port=$PORT
+```
+
 
 ## Aspect
-The application is configured to send email to an administrator with this key: `spring.user.email` when an exception occurs.
+The application is configured to send email to an administrator with this key: `spring.user.email` when an exception occurs. There are two ways to configure this.
 In order to avoid overflow of email to the administrator, we will create an asynchronous mail sender implementation:
 
 file: `src/main/java/com/jipasoft/task/AsyncMailSender.java`
@@ -428,9 +572,12 @@ file: `src/main/java/com/jipasoft/config/AspectConfig.java`
 ```java
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import com.jipasoft.util.Profiles;
 
+@Profile(Profiles.ASPECT)
 @EnableAsync
 @Configuration
 public class AspectConfig {
@@ -456,7 +603,7 @@ To get started with the aspect profile, set the `spring.mail.username` and `spri
 properties in the `application-aspect.yml` file. If your mail server is not Gmail, set and configure your 
 `spring.mail.host` and `spring.mail.port` accordingly. 
 
-A few more beans will need to be bootstrapped for this functionality to work.
+### Method 1 (Using `BeanNameAutoProxyCreator`)
 
 file: `src/main/java/com/jipasoft/config/AspectConfig.java`
 
@@ -504,6 +651,61 @@ We have our `mailSender` bean that is an asynchronous implementation of `MailSen
 To put it all together, we have the `autoProxyCreater` bean of type `BeanNameAutoProxyCreator`. In this bean we are 
 telling Spring to scan all bean names ending in `*.Controller` and setting the interceptor as the `exceptionInterceptor`
 bean created earlier.
+
+### Method 2 (Using `AspectJ`)
+file: `src/main/java/com/jipasoft/task/ExceptionAspect.java`
+
+```java
+import javax.inject.Inject;
+
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.mail.MailSender;
+import org.springframework.stereotype.Component;
+
+@Aspect
+@Component
+public class ExceptionAspect {
+
+	@Inject
+	private MailSender mailSender;
+	
+
+	@Pointcut("within(com.jipasoft.web..*)") // Proxy all methods in the controller classes
+	public void mailingPointcut() {
+	}
+
+	@AfterThrowing(pointcut = "mailingPointcut()", throwing = "e")
+	public void mailAfterThrowing(JoinPoint joinPoint, Throwable e) {
+		// Application Logic
+	}
+}
+````
+
+Next we scan our `Aspect` class through `ComponentScan` in our configuration class.
+
+```java
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Profile;
+import org.springframework.scheduling.annotation.EnableAsync;
+
+import com.jipasoft.util.Profiles;
+
+@EnableAsync
+@EnableAspectJAutoProxy
+@Profile(Profiles.ASPECT)
+@Configuration
+@ComponentScan(basePackageClasses = ExceptionAspect.class)
+public class AspectConfig {
+	// Configured beans
+}
+
+```
+Voila you are done :smile:.
 
 [comment]: # (The implicit link name shortcut allows you to omit the name of the link, in which case the link text itself is used as the name)
 [comment]: # (Reference links are not case sensitive)

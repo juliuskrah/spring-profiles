@@ -75,7 +75,6 @@ import lombok.extern.slf4j.Slf4j;
  * 
  * @see H2Config
  * @see PostgresConfig
- * @see MySQLConfig
  * @see MongoConfig
  * 
  * @author Julius Krah
@@ -86,7 +85,7 @@ import lombok.extern.slf4j.Slf4j;
 @EnableConfigurationProperties({ LiquibaseProperties.class, MailProperties.class })
 @EnableAspectJAutoProxy
 @EntityScan(basePackageClasses = AbstractAuditEntity.class)
-@Import(value = { H2Config.class, PostgresConfig.class, MySQLConfig.class, MongoConfig.class, AspectConfig.class, SecurityConfig.class })
+@Import(value = { H2Config.class, PostgresConfig.class, MongoConfig.class, AspectConfig.class, SecurityConfig.class })
 public class Application extends WebMvcConfigurerAdapter {
 	@Inject
 	private LiquibaseProperties liquibaseProperties;

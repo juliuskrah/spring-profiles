@@ -22,5 +22,3 @@ spring:
       driver-class-name: com.mysql.jdbc.Driver
   jpa:
     database: mysql
-    properties:
-      hibernate.current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext

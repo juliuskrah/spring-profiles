@@ -23,14 +23,15 @@ import com.jipasoft.repository.postgres.BaseRepositoryImpl;
 import com.jipasoft.util.Profiles;
 
 /**
- * Configuration specific to the {@code postgres} profile. The implementation of JPA here
- * is standard specification JPA. The underlying datastore is PostgreSQL
+ * Configuration specific to the {@code postgres} profile. The implementation of
+ * JPA here is standard specification JPA. The underlying datastore is
+ * PostgreSQL
  * 
  * @author Julius Krah
  *
  */
 @Configuration
-@Profile(Profiles.POSTGRES)
+@Profile({ Profiles.POSTGRES, Profiles.MYSQL })
 @ComponentScan(basePackageClasses = BaseRepositoryImpl.class)
 public class PostgresConfig {
 

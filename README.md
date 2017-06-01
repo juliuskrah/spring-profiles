@@ -238,7 +238,7 @@ User validation
 
 #### Database Migration
 The application makes use of database migration to track database changes. The migrations are split into two depending on which profile
-is active.
+is active. 
 
 1.   SQL Migration
 2.   NoSQL Migration

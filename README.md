@@ -140,11 +140,11 @@ file: `src/main/resources/templates/fragments/header.html`
 </html>
 ```
 
-*English*  
-![Homepage English](https://github.com/juliuskrah/spring-profiles/blob/master/images/profiles-en.PNG)
+*English* 
+![Homepage English](http://i.imgur.com/yohfSns.png)
 
 *French*  
-![Homepage French](https://github.com/juliuskrah/spring-profiles/blob/master/images/profiles-fr.PNG)
+![Homepage French](http://i.imgur.com/YT7O8o9.png)
 
 
 #### Error Handling
@@ -233,7 +233,7 @@ public class AccountController {
 ```
 
 User validation  
-![User Validation](https://github.com/juliuskrah/spring-profiles/blob/master/images/user-validation.PNG)
+![User Validation](http://i.imgur.com/BzQwTi8.png)
 
 
 #### Database Migration

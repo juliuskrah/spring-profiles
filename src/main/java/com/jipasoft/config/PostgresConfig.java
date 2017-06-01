@@ -23,9 +23,9 @@ import com.jipasoft.repository.postgres.BaseRepositoryImpl;
 import com.jipasoft.util.Profiles;
 
 /**
- * Configuration specific to the {@code postgres} profile. The implementation of
+ * Configuration specific to the {@code postgres} and {@code mysql} profiles. The implementation of
  * JPA here is standard specification JPA. The underlying datastore is
- * PostgreSQL
+ * PostgreSQL and/or MySQL
  * 
  * @author Julius Krah
  *

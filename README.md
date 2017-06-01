@@ -141,10 +141,10 @@ file: `src/main/resources/templates/fragments/header.html`
 ```
 
 *English* 
-![Homepage English](http://i.imgur.com/yohfSns.png)
+![Homepage English](https://i.imgur.com/yohfSns.png)
 
 *French*  
-![Homepage French](http://i.imgur.com/YT7O8o9.png)
+![Homepage French](https://i.imgur.com/YT7O8o9.png)
 
 
 #### Error Handling
@@ -233,7 +233,7 @@ public class AccountController {
 ```
 
 User validation  
-![User Validation](http://i.imgur.com/BzQwTi8.png)
+![User Validation](https://i.imgur.com/BzQwTi8.png)
 
 
 #### Database Migration

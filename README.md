@@ -1,6 +1,28 @@
 [![Build Status](https://travis-ci.org/juliuskrah/spring-profiles.svg?branch=master)](https://travis-ci.org/juliuskrah/spring-profiles)
 
 # Spring Profiles Project
+The Spring Profiles project demonstates how you can setup a Spring Boot project that connects to a variety
+of backend databases (Relational and NoSQL). This uses the `Profiles` provided by the Spring Framework.
+
+In this regard you can easily switch between backends when deploying the web application using a variety of
+mechanisms. The supported mechanisms are:  
+1.  CommandLine arguments
+2.  Configuration file settings (`.properties` and `.yaml`)
+3.  Programmatic setup
+4.  JVM properties
+5.  System environment properties
+
+With the exception of the programmatic setup, you can switch profiles easily without changing source code and 
+re-compiling.  
+
+The supported backends used in this project are:  
+1.  H2 database
+2.  MySQL database
+3.  PostgreSQL database
+4.  MongoDB database
+
+You can extend this simple application to support any backend of your choice by implementing 
+`com.jipasoft.repository.UserRepository`.
 
 ## Quick Start
 This section contains the pre-requisite to run the application, how to run the application and how to use some of the application features.

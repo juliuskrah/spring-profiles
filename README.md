@@ -5,6 +5,14 @@
 ## Quick Start
 This section contains the pre-requisite to run the application, how to run the application and how to use some of the application features.
 
+## Live Demo
+There is a live demo running on Heroku.
+
+<http://heroku.juliuskrah.com/>
+
+**Note**: This may take up to 120 seconds on first request.  
+**Login**: `admin/admin`
+
 ### Deploy on Heroku
 To deploy Spring Profiles on Heroku, click the button below:
 

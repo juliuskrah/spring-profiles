@@ -17,6 +17,8 @@ package com.jipasoft.repository;
 
 import java.util.Optional;
 
+import org.springframework.data.repository.NoRepositoryBean;
+
 import com.jipasoft.domain.User;
 
 /**
@@ -26,6 +28,7 @@ import com.jipasoft.domain.User;
  * @author Julius Krah
  *
  */
+@NoRepositoryBean
 public interface UserRepository extends BaseRepository<User, String> {
 
 	/**

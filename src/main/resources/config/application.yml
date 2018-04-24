@@ -16,8 +16,10 @@
 
 
 spring:
-  main:
-    banner-mode: 'off'
+  liquibase:
+    drop-first: true
+#  main:
+#    banner-mode: 'off'
   application:
     name: spring-profiles
   thymeleaf:
@@ -31,7 +33,7 @@ spring:
   datasource:
     hikari:
       maximum-pool-size: 5
-      initialization-fail-fast: true
+      initialization-fail-timeout: 3000
       connection-timeout: 250
   jpa:
     hibernate:
@@ -56,12 +58,10 @@ spring:
       mail.smtp.auth: true
   mvc:
     locale: en_US
-security:
-  basic:
-    enabled: false
-  user:
-    name: julius
-    password: password
+  security:
+    user:
+      name: julius
+      password: password
 logging:
   level:
     root: info

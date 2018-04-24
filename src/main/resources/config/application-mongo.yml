@@ -19,7 +19,7 @@ spring:
   data:
     mongodb:
       repositories:
-        enabled: true
+        type: auto
       database: 
       port: 27017
       host: localhost

@@ -16,7 +16,7 @@
 package com.jipasoft.config;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 /**
  * Servlet initializer that runs in a managed servlet environment. The servlet

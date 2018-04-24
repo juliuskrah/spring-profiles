@@ -40,7 +40,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
@@ -86,7 +86,7 @@ import lombok.extern.slf4j.Slf4j;
 @EnableAspectJAutoProxy
 @EntityScan(basePackageClasses = AbstractAuditEntity.class)
 @Import(value = { H2Config.class, PostgresConfig.class, MongoConfig.class, AspectConfig.class, SecurityConfig.class })
-public class Application extends WebMvcConfigurerAdapter {
+public class Application implements WebMvcConfigurer {
 	@Inject
 	private LiquibaseProperties liquibaseProperties;
 	@Inject

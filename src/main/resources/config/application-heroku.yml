@@ -22,7 +22,7 @@ spring:
       # set JDBC_DATABASE_URL=jdbc:postgresql://localhost:5432/profiles?user=postgres^&password=root^&ssl=false
       driver-class-name: org.postgresql.Driver
       maximum-pool-size: 10
-      initialization-fail-fast: true
+      initialization-fail-timeout: 3000
       minimum-idle: 2
   jpa:
     database: postgresql

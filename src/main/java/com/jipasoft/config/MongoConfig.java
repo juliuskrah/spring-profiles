@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.data.mongodb.core.convert.CustomConversions;
+import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import com.jipasoft.domain.util.JSR310DateConverters;
@@ -55,7 +55,7 @@ public class MongoConfig {
 	 * @see JSR310DateConverters
 	 */
 	@Bean
-	public CustomConversions customConversions() {
+	public MongoCustomConversions customConversions() {
 		List<Converter<?, ?>> converters = new ArrayList<>();
 		converters.add(DateToZonedDateTimeConverter.INSTANCE);
 		converters.add(ZonedDateTimeToDateConverter.INSTANCE);
@@ -63,7 +63,7 @@ public class MongoConfig {
 		converters.add(LocalDateToDateConverter.INSTANCE);
 		converters.add(DateToLocalDateTimeConverter.INSTANCE);
 		converters.add(LocalDateTimeToDateConverter.INSTANCE);
-		return new CustomConversions(converters);
+		return new MongoCustomConversions(converters);
 	}
 
 }
